@@ -19,12 +19,15 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.ucsb.cs156.organic.errors.EntityNotFoundException;
 
+import javax.validation.Valid;
 
 import java.time.LocalDateTime;
 
@@ -131,5 +134,4 @@ public class CoursesController extends ApiController {
         Iterable<Staff> courseStaff = courseStaffRepository.findByCourseId(course.getId());
         return courseStaff;
     }
-
 }
