@@ -10,6 +10,16 @@ import org.hibernate.annotations.FetchMode;
 import java.time.Instant;
 import java.util.List;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.AccessLevel;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -24,8 +34,10 @@ public class User {
   private String pictureUrl;
   private String fullName;
   private boolean emailVerified;
-  private boolean admin;
-  private boolean instructor;
+  @Builder.Default
+  private boolean admin=false;
+  @Builder.Default
+  private boolean instructor=false;
   private String accessToken;
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)  @Fetch(FetchMode.JOIN)
