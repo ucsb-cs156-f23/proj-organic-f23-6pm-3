@@ -1,0 +1,21 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+organic,edu.ucsb.cs156.organic.errors,EntityNotFoundException,0,17,0,0,0,3,0,1,0,1
+organic,edu.ucsb.cs156.organic.entities,UserEmail,0,4,0,0,0,1,0,1,0,1
+organic,edu.ucsb.cs156.organic.entities,User,0,21,0,0,0,1,0,1,0,1
+organic,edu.ucsb.cs156.organic.jobs,TestJob,0,22,0,2,0,7,0,2,0,1
+organic,edu.ucsb.cs156.organic.services.jobs,JobContext,0,45,0,2,0,6,0,3,0,2
+organic,edu.ucsb.cs156.organic.services.jobs,JobService,0,55,0,0,0,19,0,3,0,3
+organic,edu.ucsb.cs156.organic.services,CurrentUserService,0,3,0,0,0,1,0,1,0,1
+organic,edu.ucsb.cs156.organic.services,GrantedAuthoritiesService,0,21,0,0,0,7,0,3,0,3
+organic,edu.ucsb.cs156.organic.services,SystemInfoService,0,3,0,0,0,1,0,1,0,1
+organic,edu.ucsb.cs156.organic.services,SystemInfoServiceImpl,0,30,0,0,0,10,0,3,0,3
+organic,edu.ucsb.cs156.organic.controllers,StudentsController.Status,0,15,0,0,0,2,0,1,0,1
+organic,edu.ucsb.cs156.organic.controllers,UsersController,0,16,0,0,0,4,0,2,0,2
+organic,edu.ucsb.cs156.organic.controllers,ApiController,0,59,0,0,0,18,0,7,0,7
+organic,edu.ucsb.cs156.organic.controllers,ApiController.new JacksonAnnotationIntrospector() {...},0,16,0,4,0,2,0,4,0,2
+organic,edu.ucsb.cs156.organic.controllers,CSRFController,0,5,0,0,0,2,0,2,0,2
+organic,edu.ucsb.cs156.organic.controllers,JobsController,0,52,0,4,0,12,0,6,0,4
+organic,edu.ucsb.cs156.organic.controllers,CoursesController,0,155,0,2,0,40,0,10,0,9
+organic,edu.ucsb.cs156.organic.controllers,UserInfoController,0,54,0,0,0,14,0,6,0,6
+organic,edu.ucsb.cs156.organic.controllers,SystemInfoController,0,7,0,0,0,2,0,2,0,2
+organic,edu.ucsb.cs156.organic.controllers,StudentsController,0,201,0,4,0,41,0,10,0,8
