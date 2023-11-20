@@ -20,6 +20,7 @@ import io.swagger.v3.oas.annotations.Operation;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import javax.persistence.EntityNotFoundException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 
 
@@ -44,6 +45,7 @@ public class UsersController extends ApiController {
         return ResponseEntity.ok().body(body);
     }
 
+
     // ADDED CODE BELOW: 
 
 
@@ -52,24 +54,26 @@ public class UsersController extends ApiController {
     @PostMapping("/toggleAdmin")
     public Object toggleAdmin( @Parameter(name = "githubId", description = "Integer, id number of user to toggle their admin field", example = "1", required = true) @RequestParam Integer githubId){
         User user = userRepository.findByGithubId(githubId)
-        .orElseThrow(() -> new EntityNotFoundException(User.class, githubId));
+        // .orElseThrow(() -> new EntityNotFoundException(User.class, githubId));
+        .orElseThrow(() ->  new EntityNotFoundException("User not found with GITHUB ID: " + githubId));
+        // COME BACK AND FIX THIS!! ^^ 
 
-        user.setAdmin(!user.getAdmin());
+        user.setAdmin(!user.isAdmin());
         userRepository.save(user);
-        return genericMessage("User with id %s has toggled admin status to %s".formatted(githubId, user.getAdmin()));
+        return genericMessage("User with id %s has toggled admin status to %s".formatted(githubId, user.isAdmin()));
     }
 
 
-    @Operation(summary = "Toggle the Instructor field")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping("/toggleInstructor")
-    public Object toggleInstructor( @Parameter(name = "id", description = "Integer, id number of user to toggle their instructor field", example = "1", required = true) @RequestParam int id){
+    // @Operation(summary = "Toggle the Instructor field")
+    // @PreAuthorize("hasRole('ROLE_ADMIN')")
+    // @PostMapping("/toggleInstructor")
+    // public Object toggleInstructor( @Parameter(name = "githubId", description = "Integer, id number of user to toggle their instructor field", example = "1", required = true) @RequestParam Integer githubId){
 
-        User user = userRepository.findById(id)
-        .orElseThrow(() -> new EntityNotFoundException(User.class, id));
+    //     User user = userRepository.findById(githubId)
+    //     .orElseThrow(() -> new EntityNotFoundException(User.class, githubId));
 
-        user.setDriver(!user.getInstructor());
-        userRepository.save(user);
-        return genericMessage("User with id %s has toggled instructor status to %s".formatted(id, user.getInstructor()));
-    }
+    //     user.setIntrstructor(!user.isInstructor());
+    //     userRepository.save(user);
+    //     return genericMessage("User with id %s has toggled instructor status to %s".formatted(githubId, user.isInstructor()));
+    // }
 }

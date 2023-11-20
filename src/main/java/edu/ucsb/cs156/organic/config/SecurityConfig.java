@@ -94,6 +94,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
           if (userIsAdmin) {
             mappedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
           }
+          // if (getInstructor(githubLogin)){
+          //   mappedAuthorities.add(new SimpleGrantedAuthority("ROLE_INSTRUCTOR"));
+          // }
         }
 
       });
