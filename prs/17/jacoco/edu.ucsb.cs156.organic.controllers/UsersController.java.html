@@ -17,17 +17,10 @@ import edu.ucsb.cs156.organic.repositories.UserRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 
-import io.swagger.v3.oas.annotations.Parameter;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.EntityNotFoundException;
-
-
-
-
 @Tag(name = &quot;User information (admin only)&quot;)
 @RequestMapping(&quot;/api/admin/users&quot;)
 @RestController
-<span class="fc" id="L30">public class UsersController extends ApiController {</span>
+<span class="fc" id="L23">public class UsersController extends ApiController {</span>
     @Autowired
     UserRepository userRepository;
 
@@ -39,11 +32,9 @@ import javax.persistence.EntityNotFoundException;
     @GetMapping(&quot;&quot;)
     public ResponseEntity&lt;String&gt; users()
             throws JsonProcessingException {
-<span class="fc" id="L42">        Iterable&lt;User&gt; users = userRepository.findAll();</span>
-<span class="fc" id="L43">        String body = mapper.writeValueAsString(users);</span>
-<span class="fc" id="L44">        return ResponseEntity.ok().body(body);</span>
+<span class="fc" id="L35">        Iterable&lt;User&gt; users = userRepository.findAll();</span>
+<span class="fc" id="L36">        String body = mapper.writeValueAsString(users);</span>
+<span class="fc" id="L37">        return ResponseEntity.ok().body(body);</span>
     }
-
-
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
