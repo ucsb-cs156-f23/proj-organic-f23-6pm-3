@@ -42,6 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Value("${app.admin.githubLogins}")
   private final List<String> adminGithubLogins = new ArrayList<String>();
+  private final List<String> instructorGithubLogins = new ArrayList<String>();
 
   @Value("${spring.security.oauth2.client.registration.github.client-id}")
   private String clientId;
@@ -94,9 +95,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
           if (userIsAdmin) {
             mappedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
           }
-          // if (getInstructor(githubLogin)){
-          //   mappedAuthorities.add(new SimpleGrantedAuthority("ROLE_INSTRUCTOR"));
-          // }
+        
+          boolean userIsInstructor = updateInstructor(githubLogin);
+          if (userIsInstructor) {
+            mappedAuthorities.add(new SimpleGrantedAuthority("ROLE_INSTRUCTOR"));
+          }
+
         }
 
       });
@@ -113,6 +117,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     if (result) {
       User user = u.get();
       user.setAdmin(true);
+      userRepository.save(user);
+    }
+    return result;
+  }
+
+  public boolean updateInstructor(String githubLogin) {
+    if (instructorGithubLogins.contains(githubLogin)) {
+      return true;
+    }
+    Optional<User> u = userRepository.findByGithubLogin(githubLogin);
+    boolean result = u.isPresent() && u.get().isInstructor();
+    if (result) {
+      User user = u.get();
+      user.setInstructor(true);
       userRepository.save(user);
     }
     return result;

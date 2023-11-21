@@ -60,20 +60,21 @@ public class UsersController extends ApiController {
 
         user.setAdmin(!user.isAdmin());
         userRepository.save(user);
-        return genericMessage("User with id %s has toggled admin status to %s".formatted(githubId, user.isAdmin()));
+        return genericMessage("User with github id %s has toggled admin status to %s".formatted(githubId, user.isAdmin()));
     }
 
 
-    // @Operation(summary = "Toggle the Instructor field")
-    // @PreAuthorize("hasRole('ROLE_ADMIN')")
-    // @PostMapping("/toggleInstructor")
-    // public Object toggleInstructor( @Parameter(name = "githubId", description = "Integer, id number of user to toggle their instructor field", example = "1", required = true) @RequestParam Integer githubId){
+    @Operation(summary = "Toggle the Instructor field")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/toggleInstructor")
+    public Object toggleInstructor( @Parameter(name = "githubId", description = "Integer, id number of user to toggle their instructor field", example = "1", required = true) @RequestParam Integer githubId){
+        User user = userRepository.findByGithubId(githubId)
+        // .orElseThrow(() -> new EntityNotFoundException(User.class, githubId));
+        .orElseThrow(() ->  new EntityNotFoundException("User not found with GITHUB ID: " + githubId));
+        // COME BACK AND FIX THIS!! ^^
 
-    //     User user = userRepository.findById(githubId)
-    //     .orElseThrow(() -> new EntityNotFoundException(User.class, githubId));
-
-    //     user.setIntrstructor(!user.isInstructor());
-    //     userRepository.save(user);
-    //     return genericMessage("User with id %s has toggled instructor status to %s".formatted(githubId, user.isInstructor()));
-    // }
+        user.setInstructor(!user.isInstructor());
+        userRepository.save(user);
+        return genericMessage("User with github id %s has toggled instructor status to %s".formatted(githubId, user.isInstructor()));
+    }
 }
