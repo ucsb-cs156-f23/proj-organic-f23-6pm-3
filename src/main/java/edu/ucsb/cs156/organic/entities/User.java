@@ -17,8 +17,8 @@ import lombok.Builder;
 import lombok.AccessLevel;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+// import javax.persistence.GeneratedValue;
+// import javax.persistence.GenerationType;
 
 @Data
 @AllArgsConstructor

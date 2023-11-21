@@ -14,4 +14,11 @@ public interface CourseRepository extends CrudRepository<Course, Integer> {
 
    @Query("select c from courses c where c.id in (select cs.courseId from staff cs where cs.githubId = :githubId)")
    public Iterable<Course> findCoursesStaffedByUser(Integer githubId);
+
+
+   /**
+    * return 1 if user is on the staff of this course, otherwise is 0
+    */
+   @Query("select count(c) from courses c where c.id in (select cs.courseId from staff cs where cs.githubId = :githubId and c.id = :courseId)")
+   public int countOfMatchingCourses(Integer githubId, Long courseId);
 }
