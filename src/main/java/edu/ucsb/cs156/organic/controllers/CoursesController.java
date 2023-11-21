@@ -218,5 +218,24 @@ public class CoursesController extends ApiController {
 
         return course;
     }
- 
+    @Operation(summary= "Delete a course")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    @DeleteMapping("/delete")
+    public Object deleteCourse(
+           @Parameter(name="id", description="The integer identifies an course", example="123") @RequestParam Long id)
+           throws Exception{
+        Course course = courseRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Course.class,id));
+
+        User u = getCurrentUser().getUser();
+        int result = courseRepository.countOfMatchingCourses(u.getGithubId(),course.getId());
+
+        if(result == 0 && !u.isAdmin()){
+                throw new Exception("you do not have permission to perform this operation!");
+        }
+        
+        CourseRepository.delete(course);
+        return genericMessage("Course with id %s deleted".formatted(id));
+    
+    }
 }
