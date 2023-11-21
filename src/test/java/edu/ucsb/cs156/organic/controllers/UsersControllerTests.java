@@ -73,7 +73,7 @@ public class UsersControllerTests extends ControllerTestCase {
   // ADDED TESTS BELOW: 
   // toggle admin tests: 
 
-  /* 
+  
   
   @WithMockUser(roles = { "ADMIN", "USER" })
   @Test
@@ -147,7 +147,7 @@ public class UsersControllerTests extends ControllerTestCase {
     assertEquals("User with github id 15 has toggled admin status", json.get("message"));
   }
 
-  */
+  
 
 
   // @WithMockUser(roles = { "ADMIN", "USER" })

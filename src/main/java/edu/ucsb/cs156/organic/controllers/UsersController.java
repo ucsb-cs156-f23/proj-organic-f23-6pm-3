@@ -19,7 +19,7 @@ import liquibase.pro.packaged.u;
 import io.swagger.v3.oas.annotations.Operation;
 
 import io.swagger.v3.oas.annotations.Parameter;
-import javax.persistence.EntityNotFoundException;
+import edu.ucsb.cs156.organic.errors.EntityNotFoundException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 
@@ -54,9 +54,7 @@ public class UsersController extends ApiController {
     @PostMapping("/toggleAdmin")
     public Object toggleAdmin( @Parameter(name = "githubId", description = "Integer, id number of user to toggle their admin field", example = "1", required = true) @RequestParam Integer githubId){
         User user = userRepository.findByGithubId(githubId)
-        // .orElseThrow(() -> new EntityNotFoundException(User.class, githubId));
-        .orElseThrow(() ->  new EntityNotFoundException("User not found with GITHUB ID: " + githubId));
-        // COME BACK AND FIX THIS!! ^^ 
+        .orElseThrow(() -> new EntityNotFoundException(User.class, githubId));
 
         user.setAdmin(!user.isAdmin());
         userRepository.save(user);
@@ -69,9 +67,7 @@ public class UsersController extends ApiController {
     @PostMapping("/toggleInstructor")
     public Object toggleInstructor( @Parameter(name = "githubId", description = "Integer, id number of user to toggle their instructor field", example = "1", required = true) @RequestParam Integer githubId){
         User user = userRepository.findByGithubId(githubId)
-        // .orElseThrow(() -> new EntityNotFoundException(User.class, githubId));
-        .orElseThrow(() ->  new EntityNotFoundException("User not found with GITHUB ID: " + githubId));
-        // COME BACK AND FIX THIS!! ^^
+        .orElseThrow(() -> new EntityNotFoundException(User.class, githubId));
 
         user.setInstructor(!user.isInstructor());
         userRepository.save(user);
