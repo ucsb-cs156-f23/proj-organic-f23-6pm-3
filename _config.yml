@@ -23,4 +23,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-f23/proj-organic-f23-6pm-3
 owner: ucsb-cs156-f23
 repo_name: proj-organic-f23-6pm-3
-pull_requests: [{"author":{"id":"U_kgDOBXqLzw","is_bot":false,"login":"erica-ll","name":"Erica Liu"},"headRefName":"Erica-F1-UserTable","number":18,"title":"Add toggle-admin and toggle-instructor columns in UsersTable","url":"https://github.com/ucsb-cs156-f23/proj-organic-f23-6pm-3/pull/18"}]
+pull_requests: [{"author":{"id":"MDQ6VXNlcjcwMzQxMDg0","is_bot":false,"login":"Garrett-Hu","name":""},"headRefName":"Garrett-courseFixtures","number":23,"title":"Create fixtures for Courses","url":"https://github.com/ucsb-cs156-f23/proj-organic-f23-6pm-3/pull/23"},{"author":{"id":"U_kgDOBXqLzw","is_bot":false,"login":"erica-ll","name":"Erica Liu"},"headRefName":"Erica-F1-UserTable","number":18,"title":"Add toggle-admin and toggle-instructor columns in UsersTable","url":"https://github.com/ucsb-cs156-f23/proj-organic-f23-6pm-3/pull/18"}]
