@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.ucsb.cs156.organic.entities.User;
@@ -18,7 +20,7 @@ import io.swagger.v3.oas.annotations.Operation;
 @Tag(name = &quot;User information (admin only)&quot;)
 @RequestMapping(&quot;/api/admin/users&quot;)
 @RestController
-<span class="fc" id="L21">public class UsersController extends ApiController {</span>
+<span class="fc" id="L23">public class UsersController extends ApiController {</span>
     @Autowired
     UserRepository userRepository;
 
@@ -30,9 +32,9 @@ import io.swagger.v3.oas.annotations.Operation;
     @GetMapping(&quot;&quot;)
     public ResponseEntity&lt;String&gt; users()
             throws JsonProcessingException {
-<span class="fc" id="L33">        Iterable&lt;User&gt; users = userRepository.findAll();</span>
-<span class="fc" id="L34">        String body = mapper.writeValueAsString(users);</span>
-<span class="fc" id="L35">        return ResponseEntity.ok().body(body);</span>
+<span class="fc" id="L35">        Iterable&lt;User&gt; users = userRepository.findAll();</span>
+<span class="fc" id="L36">        String body = mapper.writeValueAsString(users);</span>
+<span class="fc" id="L37">        return ResponseEntity.ok().body(body);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
