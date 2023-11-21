@@ -20,6 +20,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,9 +28,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.ucsb.cs156.organic.errors.EntityNotFoundException;
-import org.springframework.security.access.AccessDeniedException;
 
+import org.springframework.security.access.AccessDeniedException;
 import java.time.LocalDateTime;
+import javax.validation.Valid;
+
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -186,4 +190,33 @@ public class CoursesController extends ApiController {
     }
 
 
+    //PUT
+    @Operation(summary= "Update a course ")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')") 
+    @PutMapping("/update")
+    public Course updateCourse(
+            @Parameter(name="id", description="The integer identifies an course", example="123") @RequestParam Long id,
+            @RequestBody @Valid Course incoming) throws Exception{
+
+        Course course = courseRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Course.class,id));
+
+        User u = getCurrentUser().getUser();
+        int result = courseRepository.countOfMatchingCourses(u.getGithubId(),course.getId());
+        if(result == 0 && !u.isAdmin()){
+                throw new Exception("you do not have permission to perform this operation!");
+        }
+
+        course.setName(incoming.getName());
+        course.setSchool(incoming.getSchool());
+        course.setTerm(incoming.getTerm());
+        course.setStartDate(incoming.getStartDate());
+        course.setEndDate(incoming.getEndDate());
+        course.setGithubOrg(incoming.getGithubOrg());
+        
+        courseRepository.save(course);
+
+        return course;
+    }
+ 
 }
