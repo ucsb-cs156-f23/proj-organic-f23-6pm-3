@@ -53,23 +53,23 @@ describe("UsersTableUtils", () => {
 
         test("Admin returns the correct params", () => {
             // arrange
-            const cell = {row: {values:{githubId:11111}}}
+            const cell = {row: {values:{id:"admin"}}}
             const result = cellToAxiosParamsToggleAdmin(cell);
             expect(result).toEqual({
                 url: "/api/admin/users/toggleAdmin",
                 method: "POST",
-                params: { id: cell.row.values.id }
+                params: {id:"admin"}
             }); 
         });
 
         test("Instructor returns the correct params", () => {
             // arrange
-            const cell = {row: {values:{githubId:11111}}}
+            const cell = {row: {values:{id:"instructor"}}}
             const result = cellToAxiosParamsToggleInstructor(cell);
             expect(result).toEqual({
                 url: "/api/admin/users/toggleInstructor",
                 method: "POST",
-                params: { id: cell.row.values.id }
+                params: { id:"instructor" }
             }); 
         });
     });

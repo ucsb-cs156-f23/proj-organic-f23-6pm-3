@@ -32,5 +32,12 @@ describe("AdminUsersPage tests",  () => {
             </QueryClientProvider>
         );
         expect(await screen.findByText("Users")).toBeInTheDocument();
+        const toggleAdmin = screen.getByTestId(`UsersTable-cell-row-0-col-toggle-admin-button`);
+        expect(toggleAdmin).toBeInTheDocument();
+        expect(toggleAdmin).toHaveClass("btn-primary");
+        const toggleInstructor = screen.getByTestId(`UsersTable-cell-row-0-col-toggle-instructor-button`);
+        expect(toggleInstructor).toBeInTheDocument();
+        expect(toggleInstructor).toHaveClass("btn-primary");
+        // expect(await screen.findByText("toggle-admin")).toBeInTheDocument();
     });
 });
