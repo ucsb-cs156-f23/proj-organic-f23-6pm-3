@@ -8,7 +8,7 @@ describe("Footer tests", () => {
             <Footer systemInfo={systemInfoFixtures.showingAll}/>
         );
 
-        const expectedText = "Organic is a project ofCS156, a course at UC Santa Barbara.  It's purpose: provide students and instructors with useful tools to manage Github organizations associated with programming and software engineering courses. The open source code is available on GitHub.";
+        const expectedText = "Organic is a project of CS156, a course at UC Santa Barbara.  It's purpose: provide students and instructors with useful tools to manage Github organizations associated with programming and software engineering courses. The open source code is available on GitHub.";
 
         
         const text = screen.getByTestId("footer-content");
