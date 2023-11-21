@@ -6,11 +6,12 @@ import { useUsers } from "main/utils/users";
 const AdminUsersPage = () => {
 
     const { data: users } = useUsers();
+    const showToggleButtons = true;
 
     return (
         <BasicLayout>
             <h2>Users</h2>
-            <UsersTable users={users} />
+            <UsersTable users={users} showToggleButtons={showToggleButtons}/>
         </BasicLayout>
     );
 };
