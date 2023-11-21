@@ -33,6 +33,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -62,6 +63,9 @@ import org.mockito.Captor;
 @Import(JobService.class)
 @AutoConfigureDataJpa
 public class CoursesControllerTests extends ControllerTestCase {
+
+        @MockBean
+        User u;
 
         @MockBean
         UserRepository userRepository;
@@ -324,4 +328,149 @@ public class CoursesControllerTests extends ControllerTestCase {
                 assertEquals(expectedMap, responseMap);
         }
 
+        @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
+        public void an_admin_user_can_update_a_course() throws Exception {
+                // arrange
+
+                when(courseRepository.findById(eq(42L))).thenReturn(Optional.empty());
+                // act
+
+                MvcResult response = mockMvc.perform(
+                                get("/api/courses/getStaff?courseId=42")
+                                                .with(csrf()))
+                                .andExpect(status().isNotFound()).andReturn();
+
+                // assert
+
+                Map<String,String> responseMap = mapper.readValue(response.getResponse().getContentAsString(), new TypeReference<Map<String,String>>(){});
+                Map<String,String> expectedMap = Map.of("message", "Course with id 42 not found", "type", "EntityNotFoundException");
+                assertEquals(expectedMap, responseMap);
+        }
+        //Test for PUT
+        @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
+        public void admin_can_edit_an_existing_course() throws Exception {
+                // arrange
+
+                User currentUser = currentUserService.getCurrentUser().getUser();
+
+                Staff courseStaff1 = Staff.builder()
+                                .id(111L)
+                                .courseId(course1.getId())
+                                .githubId(currentUser.getGithubId())
+                                .user(currentUser)
+                                .build();
+
+                Course courseAfter = Course.builder()
+                                .id(1L)
+                                .name("CS36")
+                                .school("TUCSB")
+                                .term("M25")
+                                .start(LocalDateTime.parse("2024-09-01T00:00:00"))
+                                .end(LocalDateTime.parse("2025-12-31T00:00:00"))
+                                .githubOrg("ucsb-cs36-m25")
+                                .build();
+
+                String requestBody = mapper.writeValueAsString(courseAfter);
+
+                when(courseRepository.findById(eq(course1.getId()))).thenReturn(Optional.of(course1));
+                when(courseRepository.countOfMatchingCourses(eq(courseStaff1.getGithubId()),eq(course1.getId()))).thenReturn(1);
+                // act
+                MvcResult response = mockMvc.perform(
+                                put("/api/courses/update?id=1")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .characterEncoding("utf-8")
+                                                .content(requestBody)
+                                                .with(csrf()))
+                                .andExpect(status().isOk()).andReturn();
+
+                // assert
+                verify(courseRepository, times(1)).findById(1L);
+                verify(courseRepository, times(1)).save(courseAfter); // should be saved with correct user
+                verify(courseRepository, times(1)).countOfMatchingCourses(eq(courseStaff1.getGithubId()),eq(course1.getId()));
+                String responseString = response.getResponse().getContentAsString();
+                assertEquals(requestBody, responseString);
+        }
+
+       @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
+        public void notstaff_user_cannot_edit_an_existing_course() throws Exception {
+                // arranges
+
+                User currentUser = currentUserService.getCurrentUser().getUser();
+
+                Staff courseStaff1 = Staff.builder()
+                                .id(111L)
+                                .courseId(course1.getId())
+                                .githubId(currentUser.getGithubId())
+                                .user(currentUser)
+                                .build();
+
+                Course courseAfter = Course.builder()
+                                .id(1L)
+                                .name("CS36")
+                                .school("TUCSB")
+                                .term("M25")
+                                .start(LocalDateTime.parse("2024-09-01T00:00:00"))
+                                .end(LocalDateTime.parse("2025-12-31T00:00:00"))
+                                .githubOrg("ucsb-cs36-m25")
+                                .build();
+
+                String requestBody = mapper.writeValueAsString(courseAfter);
+
+                when(courseRepository.findById(eq(course1.getId()))).thenReturn(Optional.of(course1));
+                when(courseRepository.countOfMatchingCourses(eq(courseStaff1.getGithubId()),eq(course1.getId()))).thenReturn(0);
+                // act
+                MvcResult response = mockMvc.perform(
+                                put("/api/courses/update?id=1")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .characterEncoding("utf-8")
+                                                .content(requestBody)
+                                                .with(csrf()))
+                                .andExpect(status().isOk()).andReturn();
+                
+                //isForbidden() 
+                // assert
+                verify(courseRepository, times(1)).findById(1L);
+                verify(courseRepository, times(1)).countOfMatchingCourses(eq(courseStaff1.getGithubId()),eq(course1.getId()));
+                Map<String, Object> json = responseToJson(response);
+                assertEquals("you do not have permission to perform this operation!", json.get("message"));
+        }
+
+
+        @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
+        public void admin_cannot_edit_course_that_does_not_exist() throws Exception {
+                // arrange
+
+                Course course = Course.builder()
+                                .id(67L)
+                                .name("CS16")
+                                .school("TUCSB")
+                                .term("F23")
+                                .start(LocalDateTime.parse("2023-09-01T00:00:00"))
+                                .end(LocalDateTime.parse("2023-12-31T00:00:00"))
+                                .githubOrg("ucsb-cs16-f23")
+                                .build();
+
+                String requestBody = mapper.writeValueAsString(course);
+
+                when(courseRepository.findById(eq(67L))).thenReturn(Optional.empty());
+
+                // act
+                MvcResult response = mockMvc.perform(
+                                put("/api/courses/update?id=67")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .characterEncoding("utf-8")
+                                                .content(requestBody)
+                                                .with(csrf()))
+                                .andExpect(status().isNotFound()).andReturn();
+
+                // assert
+                verify(courseRepository, times(1)).findById(67L);
+                Map<String, Object> json = responseToJson(response);
+                assertEquals("Course with id 67 not found", json.get("message"));
+
+        }
 }
