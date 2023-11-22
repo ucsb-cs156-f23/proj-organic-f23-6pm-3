@@ -152,7 +152,6 @@ public class UsersControllerTests extends ControllerTestCase {
 
 
 
-
   @WithMockUser(roles = { "ADMIN", "USER" })
   @Test
   public void admin_can_toggle_admin_status_of_a_user_from_true_to_false() throws Exception {
@@ -171,7 +170,6 @@ public class UsersControllerTests extends ControllerTestCase {
           .admin(true)
           .build();
 
-    
           when(userRepository.findByGithubId(eq(15))).thenReturn(Optional.of(userBefore));
           when(userRepository.save(eq(userAfter))).thenReturn(userAfter);
           // act
@@ -193,10 +191,7 @@ public class UsersControllerTests extends ControllerTestCase {
   @Test
   public void admin_tries_to_toggle_non_existant_user_and_gets_right_error_message() throws Exception {
           // arrange
-        
-    
           when(userRepository.findByGithubId(eq(15))).thenReturn(Optional.empty());
-          
           // act
           MvcResult response = mockMvc.perform(
                           post("/api/admin/users/toggleAdmin?id=15")
@@ -206,7 +201,6 @@ public class UsersControllerTests extends ControllerTestCase {
           // assert
           verify(userRepository, times(1)).findByGithubId(15);
          
-
           Map<String, Object> json = responseToJson(response);
           assertEquals("User with id 15 not found", json.get("message"));
   }
