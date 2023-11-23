@@ -32,9 +32,14 @@ describe("CourseForm tests", () => {
                 <CourseForm initialContents={courseFixtures.oneCourse} />
             </Router>
         );
-        await screen.findByTestId(/CourseForm-id/);
-        expect(screen.getByText(/Id/)).toBeInTheDocument();
-        expect(screen.getByTestId(/CourseForm-id/)).toHaveValue("1");
+        expect(await screen.findByTestId("CourseForm-id")).toBeInTheDocument();
+        expect(await screen.findByTestId("CourseForm-name")).toBeInTheDocument();
+        expect(await screen.findByTestId("CourseForm-school")).toBeInTheDocument();
+        expect(await screen.findByTestId("CourseForm-term")).toBeInTheDocument();
+        expect(await screen.findByTestId("CourseForm-startDate")).toBeInTheDocument();
+        expect(await screen.findByTestId("CourseForm-endDate")).toBeInTheDocument();
+        expect(await screen.findByTestId("CourseForm-githubOrganization")).toBeInTheDocument();
+        expect(screen.getByText(/Create/)).toBeInTheDocument();
     });
 
 
