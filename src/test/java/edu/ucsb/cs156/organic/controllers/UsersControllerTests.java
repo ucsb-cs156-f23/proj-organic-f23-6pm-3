@@ -64,128 +64,13 @@ public class UsersControllerTests extends ControllerTestCase {
     // assert
 
     verify(userRepository, times(1)).findAll();
+//     verify(userRepository).findAll();
     String responseString = response.getResponse().getContentAsString();
     assertEquals(expectedJson, responseString);
 
   }
 
   // toggleAdmin tests: 
-
-  @WithMockUser(roles = { "ADMIN", "USER" })
-  @Test
-  public void admin_can_toggle_admin_status_of_a_user_from_false_to_true_CAPTOR() throws Exception {
-    
-    // arrange
-    User userBefore = User.builder()
-            .email("cgaucho@ucsb.edu")
-            .githubId(15)
-            .githubLogin("bella")
-            .admin(false)
-            .build();
-
-    User userAfter = User.builder()
-            .email("cgaucho@ucsb.edu")
-            .githubId(15)
-            .githubLogin("bella")
-            .admin(true)
-            .build();
-
-    // Capture the actual user passed to userRepository.save
-    ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
-
-    when(userRepository.findByGithubId(15)).thenReturn(Optional.of(userBefore));
-    when(userRepository.save(userCaptor.capture())).thenReturn(userAfter);
-    
-    // act
-    MvcResult response = mockMvc.perform(
-            post("/api/admin/users/toggleAdmin?githubId=15")
-                    .with(csrf()))
-            .andExpect(status().isOk()).andReturn();
-
-    // assert
-    verify(userRepository, times(1)).findByGithubId(15);
-    verify(userRepository, times(1)).save(userCaptor.capture());
-
-    Map<String, Object> json = responseToJson(response);
-    assertEquals("User with github id 15 has toggled admin status to true", json.get("message"));
-  }
-
-
-  @WithMockUser(roles = { "ADMIN", "USER" })
-  @Test
-  public void admin_can_toggle_admin_status_of_a_user_from_true_to_false_CAPTOR() throws Exception {
-    
-    // arrange
-    User userBefore = User.builder()
-            .email("cgaucho@ucsb.edu")
-            .githubId(15)
-            .githubLogin("bella")
-            .admin(true)
-            .build();
-
-    User userAfter = User.builder()
-            .email("cgaucho@ucsb.edu")
-            .githubId(15)
-            .githubLogin("bella")
-            .admin(false)
-            .build();
-
-    // Capture the actual user passed to userRepository.save
-    ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
-
-    when(userRepository.findByGithubId(15)).thenReturn(Optional.of(userBefore));
-    when(userRepository.save(userCaptor.capture())).thenReturn(userAfter);
-    
-    // act
-    MvcResult response = mockMvc.perform(
-            post("/api/admin/users/toggleAdmin?githubId=15")
-                    .with(csrf()))
-            .andExpect(status().isOk()).andReturn();
-
-    // assert
-    verify(userRepository, times(1)).findByGithubId(15);
-    verify(userRepository, times(1)).save(userCaptor.capture());
-
-    Map<String, Object> json = responseToJson(response);
-    assertEquals("User with github id 15 has toggled admin status to false", json.get("message"));
-  }
-
-
-
-  @WithMockUser(roles = { "ADMIN", "USER" })
-  @Test
-  public void admin_can_toggle_admin_status_of_a_user_from_true_to_false() throws Exception {
-          // arrange
-          User userBefore = User.builder()
-          .email("cgaucho@ucsb.edu")
-          .githubId(15)
-          .githubLogin("bella")
-          .admin(true)
-          .build();
-
-          User userAfter = User.builder()
-          .email("cgaucho@ucsb.edu")
-          .githubId(15)
-          .githubLogin("bella")
-          .admin(true)
-          .build();
-
-          when(userRepository.findByGithubId(eq(15))).thenReturn(Optional.of(userBefore));
-          when(userRepository.save(eq(userAfter))).thenReturn(userAfter);
-          // act
-          MvcResult response = mockMvc.perform(
-                          post("/api/admin/users/toggleAdmin?id=15")
-                                          .with(csrf()))
-                          .andExpect(status().isOk()).andReturn();
-
-          // assert
-          verify(userRepository, times(1)).findByGithubId(15);
-          verify(userRepository, times(1)).save(userAfter);
-
-          Map<String, Object> json = responseToJson(response);
-          assertEquals("User with id 15 has toggled admin status to false", json.get("message"));
-  }
-
 
   @WithMockUser(roles = { "ADMIN", "USER" })
   @Test
@@ -206,7 +91,145 @@ public class UsersControllerTests extends ControllerTestCase {
   }
 
 
+  @WithMockUser(roles = { "ADMIN", "USER" })
+  @Test
+  public void admin_can_toggle_admin_status_of_a_user_from_true_to_false() throws Exception {
+          // arrange
+          User userBefore = User.builder()
+          .githubId(15)
+          .admin(true)
+          .build();
+
+          User userAfter = User.builder()
+          .githubId(15)
+          .admin(true)
+          .lastOnline(userBefore.getLastOnline())
+          .build();
+
+          when(userRepository.findByGithubId(eq(15))).thenReturn(Optional.of(userBefore));
+          when(userRepository.save(eq(userAfter))).thenReturn(userAfter);
+          // act
+          MvcResult response = mockMvc.perform(
+                          post("/api/admin/users/toggleAdmin?id=15")
+                                          .with(csrf()))
+                          .andExpect(status().isOk()).andReturn();
+
+          // assert
+          verify(userRepository, times(1)).findByGithubId(15);
+
+          Map<String, Object> json = responseToJson(response);
+          assertEquals("User with github id 15 has toggled admin status to false", json.get("message"));
+  }
 
 
+  @WithMockUser(roles = { "ADMIN", "USER" })
+  @Test
+  public void admin_can_toggle_admin_status_of_a_user_from_false_to_true() throws Exception {
+          // arrange
+          User userBefore = User.builder()
+          .githubId(15)
+          .admin(false)
+          .build();
 
+          User userAfter = User.builder()
+          .githubId(15)
+          .admin(true)
+          .lastOnline(userBefore.getLastOnline())
+          .build();
+
+    
+          when(userRepository.findByGithubId(eq(15))).thenReturn(Optional.of(userBefore));
+          when(userRepository.save(eq(userAfter))).thenReturn(userAfter);
+          // act
+          MvcResult response = mockMvc.perform(
+                          post("/api/admin/users/toggleAdmin?id=15")
+                                          .with(csrf()))
+                          .andExpect(status().isOk()).andReturn();
+
+          // assert
+          verify(userRepository, times(1)).findByGithubId(15);
+          verify(userRepository, times(1)).save(userAfter);
+
+          Map<String, Object> json = responseToJson(response);
+          assertEquals("User with github id 15 has toggled admin status to true", json.get("message"));
+  }
+
+
+  // toggle instructor tests
+
+  @WithMockUser(roles = { "ADMIN", "USER" })
+  @Test
+  public void admin_can_toggle_instructor_status_of_a_user_from_false_to_true() throws Exception {
+
+          User userBefore = User.builder()
+          .githubId(15)
+          .instructor(false)
+          .build();
+
+          User userAfter = User.builder()
+          .githubId(15)
+          .instructor(true)
+          .lastOnline(userBefore.getLastOnline())
+          .build();
+
+          when(userRepository.findByGithubId(eq(15))).thenReturn(Optional.of(userBefore));
+          when(userRepository.save(eq(userAfter))).thenReturn(userAfter);
+
+          MvcResult response = mockMvc.perform(
+                          post("/api/admin/users/toggleInstructor?id=15")
+                                          .with(csrf()))
+                          .andExpect(status().isOk()).andReturn();
+
+          verify(userRepository).findByGithubId(15);
+    
+          Map<String, Object> json = responseToJson(response);
+          assertEquals("User with github id 15 has toggled instructor status to true", json.get("message"));
+  }
+
+  @WithMockUser(roles = { "ADMIN", "USER" })
+  @Test
+  public void admin_can_toggle_instructor_status_of_a_user_from_true_to_false() throws Exception {
+
+          User userBefore = User.builder()
+          .githubId(15)
+          .instructor(true)
+          .build();
+
+          User userAfter = User.builder()
+          .githubId(15)
+          .instructor(false)
+          .lastOnline(userBefore.getLastOnline())
+          .build();
+
+          when(userRepository.findByGithubId(eq(15))).thenReturn(Optional.of(userBefore));
+          when(userRepository.save(eq(userAfter))).thenReturn(userAfter);
+
+          MvcResult response = mockMvc.perform(
+                          post("/api/admin/users/toggleInstructor?id=15")
+                                          .with(csrf()))
+                          .andExpect(status().isOk()).andReturn();
+
+          verify(userRepository).findByGithubId(15);
+    
+          Map<String, Object> json = responseToJson(response);
+          assertEquals("User with github id 15 has toggled instructor status to false", json.get("message"));
+  }
+
+  @WithMockUser(roles = { "ADMIN", "USER" })
+  @Test
+  public void admin_tries_to_toggle_instructor_for_non_existant_user_and_gets_right_error_message() throws Exception {
+        
+          when(userRepository.findByGithubId(eq(15))).thenReturn(Optional.empty());
+          
+          MvcResult response = mockMvc.perform(
+                          post("/api/admin/users/toggleInstructor?id=15")
+                                          .with(csrf()))
+                          .andExpect(status().isNotFound()).andReturn();
+
+          verify(userRepository).findByGithubId(15);
+         
+          Map<String, Object> json = responseToJson(response);
+          assertEquals("User with id 15 not found", json.get("message"));
+  }
+  
 }

@@ -14,14 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import edu.ucsb.cs156.organic.entities.User;
 import edu.ucsb.cs156.organic.repositories.UserRepository;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import liquibase.pro.packaged.u;
-import io.swagger.v3.oas.annotations.Operation;
-
-import io.swagger.v3.oas.annotations.Parameter;
 import edu.ucsb.cs156.organic.errors.EntityNotFoundException;
-import com.fasterxml.jackson.core.JsonProcessingException;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 
 
 
@@ -46,31 +43,28 @@ public class UsersController extends ApiController {
     }
 
 
-    // ADDED CODE BELOW: 
-
-
     @Operation(summary = "Toggle the admin field")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/toggleAdmin")
-    public Object toggleAdmin( @Parameter(name = "githubId", description = "Integer, id number of user to toggle their admin field", example = "1", required = true) @RequestParam Integer githubId){
-        User user = userRepository.findByGithubId(githubId)
-        .orElseThrow(() -> new EntityNotFoundException(User.class, githubId));
+    public Object toggleAdmin( @Parameter(name = "Github Id", description = "Integer, github id number of user to toggle their admin field", example = "1", required = true) @RequestParam Integer id){
+        User user = userRepository.findByGithubId(id)
+        .orElseThrow(() -> new EntityNotFoundException(User.class, id));
 
         user.setAdmin(!user.isAdmin());
         userRepository.save(user);
-        return genericMessage("User with github id %s has toggled admin status to %s".formatted(githubId, user.isAdmin()));
+        return genericMessage("User with github id %s has toggled admin status to %s".formatted(id, user.isAdmin()));
     }
 
 
     @Operation(summary = "Toggle the Instructor field")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/toggleInstructor")
-    public Object toggleInstructor( @Parameter(name = "githubId", description = "Integer, id number of user to toggle their instructor field", example = "1", required = true) @RequestParam Integer githubId){
-        User user = userRepository.findByGithubId(githubId)
-        .orElseThrow(() -> new EntityNotFoundException(User.class, githubId));
+    public Object toggleInstructor( @Parameter(name = "Github Id", description = "Integer, id number of user to toggle their instructor field", example = "1", required = true) @RequestParam Integer id){
+        User user = userRepository.findByGithubId(id)
+        .orElseThrow(() -> new EntityNotFoundException(User.class, id));
 
         user.setInstructor(!user.isInstructor());
         userRepository.save(user);
-        return genericMessage("User with github id %s has toggled instructor status to %s".formatted(githubId, user.isInstructor()));
+        return genericMessage("User with github id %s has toggled instructor status to %s".formatted(id, user.isInstructor()));
     }
 }
