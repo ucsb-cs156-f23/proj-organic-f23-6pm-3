@@ -46,13 +46,13 @@ public class UsersController extends ApiController {
     @Operation(summary = "Toggle the admin field")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/toggleAdmin")
-    public Object toggleAdmin( @Parameter(name = "Github Id", description = "Integer, github id number of user to toggle their admin field", example = "1", required = true) @RequestParam Integer id){
-        User user = userRepository.findByGithubId(id)
-        .orElseThrow(() -> new EntityNotFoundException(User.class, id));
+    public Object toggleAdmin( @Parameter(name = "Github Id", description = "Integer, github id number of user to toggle their admin field", example = "1", required = true) @RequestParam Integer githubId){
+        User user = userRepository.findByGithubId(githubId)
+        .orElseThrow(() -> new EntityNotFoundException(User.class, githubId));
 
         user.setAdmin(!user.isAdmin());
         userRepository.save(user);
-        return genericMessage("User with github id %s has toggled admin status to %s".formatted(id, user.isAdmin()));
+        return genericMessage("User with github id %s has toggled admin status to %s".formatted(githubId, user.isAdmin()));
     }
 
 
