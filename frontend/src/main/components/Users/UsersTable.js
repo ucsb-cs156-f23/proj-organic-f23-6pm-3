@@ -81,5 +81,3 @@ export default function UsersTable({ users, showToggleButtons }) {
         columns={retColumns}
         testid={"UsersTable"} />;
 };
-
-export {cellToAxiosParamsToggleInstructor};
