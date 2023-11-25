@@ -72,7 +72,6 @@ export default function UsersTable({ users, showToggleButtons }) {
 
     return <OurTable
         data={users}
-        showToggleButtons={showToggleButtons}
         columns={retColumns}
         testid={"UsersTable"} />;
 };
