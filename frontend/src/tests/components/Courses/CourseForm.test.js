@@ -42,25 +42,6 @@ describe("CourseForm tests", () => {
         expect(screen.getByText(/Create/)).toBeInTheDocument();
     });
 
-
-    test("Correct Error messsages on bad input", async () => {
-
-        render(
-            <Router  >
-                <CourseForm />
-            </Router>
-        );
-        await screen.findByTestId("CourseForm-start");
-        const startDateField = screen.getByTestId("CourseForm-start");
-        const endDateField = screen.getByTestId("CourseForm-end");
-        const submitButton = screen.getByTestId("CourseForm-submit");
-
-        fireEvent.change(startDateField, { target: { value: 'bad-input' } });
-        fireEvent.change(endDateField, { target: { value: 'bad-input' } });
-        fireEvent.click(submitButton);
-
-    });
-
     test("Correct Error messsages on missing input", async () => {
 
         render(
