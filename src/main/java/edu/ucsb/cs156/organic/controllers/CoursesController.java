@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.AccessDeniedException;
+
 
 import edu.ucsb.cs156.organic.errors.EntityNotFoundException;
 
@@ -55,6 +57,8 @@ public class CoursesController extends ApiController {
             return courseRepository.findCoursesStaffedByUser(u.getGithubId());
         }
     }
+
+    // POST Course
 
     @Operation(summary = "Create a new course")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -91,6 +95,7 @@ public class CoursesController extends ApiController {
         return savedCourse;
     }
 
+    // Post Staff
     @Operation(summary = "Add a staff member to a course")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/addStaff")
@@ -117,6 +122,7 @@ public class CoursesController extends ApiController {
         return courseStaff;
     }
 
+    // Get All
     @Operation(summary = "Get Staff for course")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/getStaff")
@@ -131,5 +137,28 @@ public class CoursesController extends ApiController {
         Iterable<Staff> courseStaff = courseStaffRepository.findByCourseId(course.getId());
         return courseStaff;
     }
+
+    // Get by ID
+    @Operation(summary = "Get a course by its ID")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+    @GetMapping("/get")
+        public Course getCourseById(
+                @Parameter(name = "id", description = "The ID of the course") @RequestParam Long id)
+
+                throws JsonProcessingException {
+
+        User currentUser = getCurrentUser().getUser();
+
+        Course course = courseRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Course.class, id.toString()));
+
+        // Check if the current user is an admin or a staff member of the course
+        if (currentUser.isAdmin() || courseStaffRepository.findByCourseIdAndGithubId(course.getId(), currentUser.getGithubId()).isPresent()) {
+                return course;
+        } else {
+                throw new AccessDeniedException("You do not have permission to access this course.");
+                }
+}
+
 
 }

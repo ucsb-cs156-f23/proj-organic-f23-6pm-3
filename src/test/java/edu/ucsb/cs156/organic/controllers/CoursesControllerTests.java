@@ -324,4 +324,85 @@ public class CoursesControllerTests extends ControllerTestCase {
                 assertEquals(expectedMap, responseMap);
         }
 
+        // Course GETbyID Test
+        @WithMockUser(roles = { "ADMIN" })
+        @Test
+        public void admin_can_get_course_by_id() throws Exception {
+            // arrange
+            when(courseRepository.findById(eq(1L))).thenReturn(Optional.of(course1));
+        
+            // act
+            MvcResult response = mockMvc.perform(get("/api/courses/get?id=1"))
+                            .andExpect(status().isOk()).andReturn();
+        
+            // assert
+            verify(courseRepository, times(1)).findById(eq(1L));
+            String expectedJson = objectMapper.writeValueAsString(course1);
+            String responseString = response.getResponse().getContentAsString();
+            assertEquals(expectedJson, responseString);
+        }
+        
+        @WithMockUser(roles = { "USER" })
+        @Test
+        public void user_can_get_course_by_id_if_they_are_staff() throws Exception {
+            // arrange
+            User currentUser = User.builder().githubId(12345).build();
+            when(userRepository.findByGithubId(any())).thenReturn(Optional.of(currentUser));
+            when(courseRepository.findById(eq(1L))).thenReturn(Optional.of(course1));
+        
+            Staff mockStaffMember = Staff.builder()
+                .courseId(course1.getId())
+                .githubId(currentUser.getGithubId())
+                .build();
+        
+            when(courseStaffRepository.findByCourseIdAndGithubId(eq(1L), eq(currentUser.getGithubId())))
+                .thenReturn(Optional.of(mockStaffMember));
+        
+            // act
+            MvcResult response = mockMvc.perform(get("/api/courses/get?id=1"))
+                            .andExpect(status().isOk()).andReturn();
+        
+            // assert
+            verify(courseRepository, times(1)).findById(eq(1L));
+            String expectedJson = objectMapper.writeValueAsString(course1);
+            String responseString = response.getResponse().getContentAsString();
+            assertEquals(expectedJson, responseString);
+        }
+        
+        
+        @WithMockUser(roles = { "USER" })
+        @Test
+        public void user_cannot_get_course_by_id_if_they_are_not_staff() throws Exception {
+            // arrange
+            User currentUser = User.builder().githubId(12345).build();
+            when(userRepository.findByGithubId(any())).thenReturn(Optional.of(currentUser));
+            when(courseRepository.findById(eq(1L))).thenReturn(Optional.of(course1));
+            when(courseStaffRepository.findByCourseIdAndGithubId(eq(1L), eq(currentUser.getGithubId())))
+                .thenReturn(Optional.empty());
+        
+            // act
+            MvcResult response = mockMvc.perform(get("/api/courses/get?id=1"))
+                            .andExpect(status().isForbidden()).andReturn();
+        
+            // assert
+            verify(courseRepository, times(1)).findById(eq(1L));
+        }
+        
+        @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
+        public void cannot_get_course_by_id_if_course_does_not_exist() throws Exception {
+            // arrange
+            when(courseRepository.findById(eq(42L))).thenReturn(Optional.empty());
+        
+            // act
+            MvcResult response = mockMvc.perform(get("/api/courses/get?id=42"))
+                            .andExpect(status().isNotFound()).andReturn();
+        
+            // assert
+            verify(courseRepository, times(1)).findById(eq(42L));
+            Map<String, Object> json = responseToJson(response);
+            assertEquals("EntityNotFoundException", json.get("type"));
+            assertEquals("Course with id 42 not found", json.get("message"));
+        }
+        
 }
