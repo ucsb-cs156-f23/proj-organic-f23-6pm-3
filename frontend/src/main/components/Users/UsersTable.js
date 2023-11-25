@@ -68,12 +68,7 @@ export default function UsersTable({ users, showToggleButtons }) {
         ButtonColumn("toggle-instructor", "primary", toggleInstructorCallback, "UsersTable")
     ]
 
-    var retColumns;
-    if (showToggleButtons){
-        retColumns = buttonColumns;
-    }else{
-        retColumns = columns;
-    }
+    const retColumns = showToggleButtons ? buttonColumns : columns;
 
     return <OurTable
         data={users}
