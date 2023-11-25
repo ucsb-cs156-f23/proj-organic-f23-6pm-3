@@ -38,26 +38,6 @@ const columns = [
     }
 ];
 
-// function cellToAxiosParamsToggleAdmin(cell){
-//     return{
-//         url: "/api/admin/users/toggleAdmin",
-//         method: "POST",
-//         params:{
-//             id: cell.row.values.id
-//         }
-//     }
-// }
-
-// function cellToAxiosParamsToggleInstructor(cell){
-//     return{
-//         url: "/api/admin/users/toggleInstructor",
-//         method: "POST",
-//         params: {
-//             id: cell.row.values.id
-//         }
-//     }
-// }
-
 export default function UsersTable({ users, showToggleButtons }) {
     // Stryker disable all : hard to test for query caching
     const toggleAdminMutation = useBackendMutation(
