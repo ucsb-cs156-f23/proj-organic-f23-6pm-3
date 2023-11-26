@@ -192,7 +192,7 @@ public class CoursesController extends ApiController {
 
     //PUT
     @Operation(summary = "Update a course")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')") 
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_INSTRUCTOR')") 
     @PutMapping("/update")
     public Course updateCourse(
             @Parameter(name = "courseId") @RequestParam Long courseId,
