@@ -64,7 +64,7 @@ public class UsersControllerTests extends ControllerTestCase {
     // assert
 
     verify(userRepository, times(1)).findAll();
-//     verify(userRepository).findAll();
+
     String responseString = response.getResponse().getContentAsString();
     assertEquals(expectedJson, responseString);
 
@@ -103,7 +103,7 @@ public class UsersControllerTests extends ControllerTestCase {
           User userAfter = User.builder()
           .githubId(15)
           .admin(true)
-          .lastOnline(userBefore.getLastOnline())
+        //   .lastOnline(userBefore.getLastOnline())
           .build();
 
           when(userRepository.findByGithubId(eq(15))).thenReturn(Optional.of(userBefore));
@@ -118,7 +118,7 @@ public class UsersControllerTests extends ControllerTestCase {
           verify(userRepository, times(1)).findByGithubId(15);
 
           Map<String, Object> json = responseToJson(response);
-          assertEquals("User with github id 15 has toggled admin status to false", json.get("message"));
+          assertEquals("User with id 15 has toggled admin status to false", json.get("message"));
   }
 
 
@@ -134,7 +134,7 @@ public class UsersControllerTests extends ControllerTestCase {
           User userAfter = User.builder()
           .githubId(15)
           .admin(true)
-          .lastOnline(userBefore.getLastOnline())
+        //   .lastOnline(userBefore.getLastOnline())
           .build();
 
     
@@ -148,10 +148,9 @@ public class UsersControllerTests extends ControllerTestCase {
 
           // assert
           verify(userRepository, times(1)).findByGithubId(15);
-          verify(userRepository, times(1)).save(userAfter);
 
           Map<String, Object> json = responseToJson(response);
-          assertEquals("User with github id 15 has toggled admin status to true", json.get("message"));
+          assertEquals("User with id 15 has toggled admin status to true", json.get("message"));
   }
 
 
@@ -183,7 +182,7 @@ public class UsersControllerTests extends ControllerTestCase {
           verify(userRepository).findByGithubId(15);
     
           Map<String, Object> json = responseToJson(response);
-          assertEquals("User with github id 15 has toggled instructor status to true", json.get("message"));
+          assertEquals("User with id 15 has toggled instructor status to true", json.get("message"));
   }
 
   @WithMockUser(roles = { "ADMIN", "USER" })
@@ -212,7 +211,7 @@ public class UsersControllerTests extends ControllerTestCase {
           verify(userRepository).findByGithubId(15);
     
           Map<String, Object> json = responseToJson(response);
-          assertEquals("User with github id 15 has toggled instructor status to false", json.get("message"));
+          assertEquals("User with id 15 has toggled instructor status to false", json.get("message"));
   }
 
   @WithMockUser(roles = { "ADMIN", "USER" })

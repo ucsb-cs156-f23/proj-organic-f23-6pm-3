@@ -46,25 +46,25 @@ public class UsersController extends ApiController {
     @Operation(summary = "Toggle the admin field")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/toggleAdmin")
-    public Object toggleAdmin( @Parameter(name = "Github Id", description = "Integer, github id number of user to toggle their admin field", example = "1", required = true) @RequestParam Integer githubId){
+    public Object toggleAdmin( @Parameter(name = "githubId", description = "Integer, github id number of user to toggle their admin field", example = "1", required = true) @RequestParam Integer githubId){
         User user = userRepository.findByGithubId(githubId)
         .orElseThrow(() -> new EntityNotFoundException(User.class, githubId));
 
         user.setAdmin(!user.isAdmin());
         userRepository.save(user);
-        return genericMessage("User with github id %s has toggled admin status to %s".formatted(githubId, user.isAdmin()));
+        return genericMessage("User with id %s has toggled admin status to %s".formatted(githubId, user.isAdmin()));
     }
 
 
     @Operation(summary = "Toggle the Instructor field")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/toggleInstructor")
-    public Object toggleInstructor( @Parameter(name = "Github Id", description = "Integer, id number of user to toggle their instructor field", example = "1", required = true) @RequestParam Integer id){
-        User user = userRepository.findByGithubId(id)
-        .orElseThrow(() -> new EntityNotFoundException(User.class, id));
+    public Object toggleInstructor( @Parameter(name = "githubId", description = "Integer, id number of user to toggle their instructor field", example = "1", required = true) @RequestParam Integer githubId){
+        User user = userRepository.findByGithubId(githubId)
+        .orElseThrow(() -> new EntityNotFoundException(User.class, githubId));
 
         user.setInstructor(!user.isInstructor());
         userRepository.save(user);
-        return genericMessage("User with github id %s has toggled instructor status to %s".formatted(id, user.isInstructor()));
+        return genericMessage("User with id %s has toggled instructor status to %s".formatted(githubId, user.isInstructor()));
     }
 }
