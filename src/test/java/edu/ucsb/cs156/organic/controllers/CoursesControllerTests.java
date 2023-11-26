@@ -330,18 +330,18 @@ public class CoursesControllerTests extends ControllerTestCase {
         public void an_admin_user_can_update_a_course() throws Exception {
                 // arrange
 
-                when(courseRepository.findById(eq(42L))).thenReturn(Optional.empty());
+                when(courseRepository.findById(eq(114514))).thenReturn(Optional.empty());
                 // act
 
                 MvcResult response = mockMvc.perform(
-                                get("/api/courses/getStaff?courseId=42")
+                                get("/api/courses/getStaff?courseId=114514")
                                                 .with(csrf()))
                                 .andExpect(status().isNotFound()).andReturn();
 
                 // assert
 
                 Map<String,String> responseMap = mapper.readValue(response.getResponse().getContentAsString(), new TypeReference<Map<String,String>>(){});
-                Map<String,String> expectedMap = Map.of("message", "Course with id 42 not found", "type", "EntityNotFoundException");
+                Map<String,String> expectedMap = Map.of("message", "Course with id 114514 not found", "type", "EntityNotFoundException");
                 assertEquals(expectedMap, responseMap);
         }
         //Test for PUT
