@@ -209,7 +209,7 @@ public class JobsControllerTests extends ControllerTestCase {
 
                 // act
                 MvcResult response = mockMvc
-                                .perform(post("/api/jobs/launch/testjob?fail=true&sleepMs=3000").with(csrf()))
+                                .perform(post("/api/jobs/launch/testjob?fail=true&sleepMs=4000").with(csrf()))
                                 .andExpect(status().isOk()).andReturn();
 
                 String responseString = response.getResponse().getContentAsString();
