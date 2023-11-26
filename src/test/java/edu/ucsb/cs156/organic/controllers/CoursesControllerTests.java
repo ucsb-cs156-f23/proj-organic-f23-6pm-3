@@ -65,9 +65,6 @@ import org.mockito.Captor;
 public class CoursesControllerTests extends ControllerTestCase {
 
         @MockBean
-        User u;
-
-        @MockBean
         UserRepository userRepository;
 
         @MockBean
