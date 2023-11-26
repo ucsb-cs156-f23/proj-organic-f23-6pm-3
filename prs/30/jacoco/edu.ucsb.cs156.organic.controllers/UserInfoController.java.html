@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserInfoController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">organic</a> &gt; <a href="index.source.html" class="el_package">edu.ucsb.cs156.organic.controllers</a> &gt; <span class="el_source">UserInfoController.java</span></div><h1>UserInfoController.java</h1><pre class="source lang-java linenums">package edu.ucsb.cs156.organic.controllers;
+
+import edu.ucsb.cs156.organic.entities.Course;
+import edu.ucsb.cs156.organic.entities.User;
+import edu.ucsb.cs156.organic.entities.UserEmail;
+import edu.ucsb.cs156.organic.models.CurrentUser;
+import edu.ucsb.cs156.organic.repositories.CourseRepository;
+import edu.ucsb.cs156.organic.repositories.UserRepository;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.slf4j.Slf4j;
+import io.swagger.v3.oas.annotations.Operation;
+
+import java.time.Instant;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
+import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
+<span class="fc" id="L29">@Slf4j</span>
+@Tag(name = &quot;Current User Information&quot;)
+@RequestMapping(&quot;/api/currentUser&quot;)
+@RestController
+<span class="fc" id="L33">public class UserInfoController extends ApiController {</span>
+  @Autowired
+  private UserRepository userRepository;
+
+  @Operation(summary = &quot;Get information about current user&quot;)
+  @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
+  @GetMapping(&quot;&quot;)
+  public ResponseEntity&lt;String&gt; getCurrentUserAsJson() throws JsonProcessingException {
+<span class="fc" id="L41">    CurrentUser cu = super.getCurrentUser();</span>
+<span class="fc" id="L42">    String cuAsJson = getMapper().writeValueAsString(cu);</span>
+<span class="fc" id="L43">    return ResponseEntity.ok().body(cuAsJson);</span>
+  }
+
+  @Operation(summary = &quot;Update user's last online time&quot;)
+  @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
+  @PostMapping(&quot;/last-online&quot;)
+  public ResponseEntity&lt;Instant&gt; updateLastOnline() {
+<span class="fc" id="L50">    User user = super.getCurrentUser().getUser();</span>
+<span class="fc" id="L51">    Instant timeNow = Instant.now();</span>
+<span class="fc" id="L52">    user.setLastOnline(timeNow);</span>
+<span class="fc" id="L53">    userRepository.save(user);</span>
+<span class="fc" id="L54">    return ResponseEntity.ok().body(timeNow);</span>
+  }
+
+  @Operation(summary = &quot;Get current users emails&quot;)
+  @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
+  @GetMapping(&quot;/emails&quot;)
+  public Iterable&lt;UserEmail&gt; getUsersEmails() {
+<span class="fc" id="L61">    User user = super.getCurrentUser().getUser();</span>
+<span class="fc" id="L62">    return user.getEmails();</span>
+  }
+
+  @Operation(summary = &quot;Get courses for which current user is on the staff&quot;)
+  @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
+  @GetMapping(&quot;/staffedCourses&quot;)
+  public Iterable&lt;Course&gt; getStaffedCourses() {
+<span class="fc" id="L69">    User user = super.getCurrentUser().getUser();</span>
+<span class="fc" id="L70">    return userRepository.findCoursesStaffedByUser(user.getGithubId());  </span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
