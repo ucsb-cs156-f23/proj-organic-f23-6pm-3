@@ -426,7 +426,7 @@ public class CoursesControllerTests extends ControllerTestCase {
 
         }
         
-        @WithMockUser(roles = { "ADMIN", "USER" })
+        @WithMockUser(roles = { "INSTRUCTOR" })
         @Test
         public void nonstaff_cannot_edit_an_existing_course() throws Exception {
                 // arrange
