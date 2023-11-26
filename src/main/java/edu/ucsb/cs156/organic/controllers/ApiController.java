@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.security.access.AccessDeniedException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
@@ -71,4 +72,18 @@ public abstract class ApiController {
     });
     return mapper;
   }
+
+  protected Object genericMessage(String message) {
+    return Map.of("message", message);
+  }
+
+  @ExceptionHandler({ AccessDeniedException.class })
+  @ResponseStatus(HttpStatus.FORBIDDEN)
+  public Object handleAccessDeniedException(Throwable err) {
+    return Map.of(
+      "type", err.getClass().getSimpleName(),
+      "message", err.getMessage()
+    );
+  }
+
 }

@@ -140,21 +140,19 @@ public class CoursesController extends ApiController {
     }
 
     //PUT
-    @Operation(summary= "Update a course ")
+    @Operation(summary = "Update a course")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')") 
     @PutMapping("/update")
     public Course updateCourse(
-            @Parameter(name="id", description="The integer identifies an course", example="123") @RequestParam Long id,
-            @RequestBody @Valid Course incoming) throws Exception{
+            @Parameter(name = "courseId") @RequestParam Long courseId,
+            @RequestBody @Valid Course incoming) throws JsonProcessingException {
 
-        Course course = courseRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(Course.class,id));
-
-        User u = getCurrentUser().getUser();
-        int result = courseRepository.countOfMatchingCourses(u.getGithubId(),course.getId());
-        if(result == 0 && !u.isAdmin()){
-                throw new Exception("you do not have permission to perform this operation!");
-        }
+        User user = getCurrentUser().getUser();
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new EntityNotFoundException(Course.class, courseId.toString()));
+        courseStaffRepository.findByCourseIdAndGithubId(courseId, user.getGithubId())
+        .orElseThrow(() -> new AccessDeniedException(
+            String.format("%s is not allowed to update course %d", user.getGithubLogin(), courseId)));
 
         course.setName(incoming.getName());
         course.setSchool(incoming.getSchool());
@@ -162,29 +160,8 @@ public class CoursesController extends ApiController {
         course.setStart(incoming.getStart());
         course.setEnd(incoming.getEnd());
         course.setGithubOrg(incoming.getGithubOrg());
-        
+
         courseRepository.save(course);
-
         return course;
-    }
-    @Operation(summary= "Delete a course")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
-    @DeleteMapping("/delete")
-    public Object deleteCourse(
-           @Parameter(name="id", description="The integer identifies an course", example="123") @RequestParam Long id)
-           throws Exception{
-        Course course = courseRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(Course.class,id));
-
-        User u = getCurrentUser().getUser();
-        int result = courseRepository.countOfMatchingCourses(u.getGithubId(),course.getId());
-
-        if(result == 0 && !u.isAdmin()){
-                throw new Exception("you do not have permission to perform this operation!");
-        }
-        
-        CourseRepository.delete(course);
-        return genericMessage("Course with id %s deleted".formatted(id));
-    
     }
 }
