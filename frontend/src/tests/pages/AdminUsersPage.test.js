@@ -38,6 +38,5 @@ describe("AdminUsersPage tests",  () => {
         const toggleInstructor = screen.getByTestId(`UsersTable-cell-row-0-col-toggle-instructor-button`);
         expect(toggleInstructor).toBeInTheDocument();
         expect(toggleInstructor).toHaveClass("btn-primary");
-        // expect(await screen.findByText("toggle-admin")).toBeInTheDocument();
     });
 });
