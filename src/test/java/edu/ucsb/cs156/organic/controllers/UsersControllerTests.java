@@ -45,7 +45,6 @@ public class UsersControllerTests extends ControllerTestCase {
   public void users__admin_logged_in() throws Exception {
 
     // arrange
-
     User u1 = User.builder().githubId(1).build();
     User u2 = User.builder().githubId(2).build();
 
@@ -56,12 +55,10 @@ public class UsersControllerTests extends ControllerTestCase {
     String expectedJson = mapper.writeValueAsString(expectedUsers);
 
     // act
-
     MvcResult response = mockMvc.perform(get("/api/admin/users"))
         .andExpect(status().isOk()).andReturn();
 
     // assert
-
     verify(userRepository).findAll();
     String responseString = response.getResponse().getContentAsString();
     assertEquals(expectedJson, responseString);
@@ -196,7 +193,6 @@ public void admin_can_toggle_instructor_status_of_a_user_from_true_to_false() th
 
         Map<String, Object> json = responseToJson(response);
         assertEquals("User with id 15 has toggled instructor status to false", json.get("message"));
-
 }
 
 @WithMockUser(roles = { "ADMIN", "USER" })
@@ -215,7 +211,6 @@ public void admin_tries_to_toggle_instructor_for_non_existant_user_and_gets_righ
         Map<String, Object> json = responseToJson(response);
         assertEquals("User with id 15 not found", json.get("message"));
 }
-
 
 
 }
