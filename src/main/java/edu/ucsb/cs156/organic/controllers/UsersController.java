@@ -62,4 +62,6 @@ public class UsersController extends ApiController {
         return genericMessage("User with id %s has toggled instructor status to %s".formatted(githubId, user.isInstructor()));
     }
 
+
+
 }
