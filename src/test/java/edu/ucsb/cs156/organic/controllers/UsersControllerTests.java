@@ -87,7 +87,7 @@ public void admin_can_toggle_admin_status_of_a_user_from_false_to_true() throws 
         when(userRepository.save(eq(userAfter))).thenReturn(userAfter);
 
         MvcResult response = mockMvc.perform(
-                        post("/api/admin/users/toggleAdmin?id=15")
+                        post("/api/admin/users/toggleAdmin?githubId=15")
                                         .with(csrf()))
                         .andExpect(status().isOk()).andReturn();
 
@@ -115,7 +115,7 @@ public void admin_can_toggle_admin_status_of_a_user_from_true_to_false() throws 
         when(userRepository.save(eq(userAfter))).thenReturn(userAfter);
 
         MvcResult response = mockMvc.perform(
-                        post("/api/admin/users/toggleAdmin?id=15")
+                        post("/api/admin/users/toggleAdmin?githubId=15")
                                         .with(csrf()))
                         .andExpect(status().isOk()).andReturn();
 
@@ -132,7 +132,7 @@ public void admin_tries_to_toggle_non_existant_user_and_gets_right_error_message
         when(userRepository.findByGithubId(eq(15))).thenReturn(Optional.empty());
 
         MvcResult response = mockMvc.perform(
-                        post("/api/admin/users/toggleAdmin?id=15")
+                        post("/api/admin/users/toggleAdmin?githubId=15")
                                         .with(csrf()))
                         .andExpect(status().isNotFound()).andReturn();
 
@@ -160,7 +160,7 @@ public void admin_can_toggle_instructor_status_of_a_user_from_false_to_true() th
         when(userRepository.save(eq(userAfter))).thenReturn(userAfter);
 
         MvcResult response = mockMvc.perform(
-                        post("/api/admin/users/toggleInstructor?id=15")
+                        post("/api/admin/users/toggleInstructor?githubId=15")
                                         .with(csrf()))
                         .andExpect(status().isOk()).andReturn();
 
@@ -188,7 +188,7 @@ public void admin_can_toggle_instructor_status_of_a_user_from_true_to_false() th
         when(userRepository.save(eq(userAfter))).thenReturn(userAfter);
 
         MvcResult response = mockMvc.perform(
-                        post("/api/admin/users/toggleInstructor?id=15")
+                        post("/api/admin/users/toggleInstructor?githubId=15")
                                         .with(csrf()))
                         .andExpect(status().isOk()).andReturn();
 
@@ -206,7 +206,7 @@ public void admin_tries_to_toggle_instructor_for_non_existant_user_and_gets_righ
         when(userRepository.findByGithubId(eq(15))).thenReturn(Optional.empty());
 
         MvcResult response = mockMvc.perform(
-                        post("/api/admin/users/toggleInstructor?id=15")
+                        post("/api/admin/users/toggleInstructor?githubId=15")
                                         .with(csrf()))
                         .andExpect(status().isNotFound()).andReturn();
 
@@ -215,9 +215,6 @@ public void admin_tries_to_toggle_instructor_for_non_existant_user_and_gets_righ
         Map<String, Object> json = responseToJson(response);
         assertEquals("User with id 15 not found", json.get("message"));
 }
-
-
-
 
 
 
