@@ -1,0 +1,12 @@
+edu.ucsb.cs156.organic
+edu.ucsb.cs156.organic.config
+edu.ucsb.cs156.organic.controllers
+edu.ucsb.cs156.organic.entities
+edu.ucsb.cs156.organic.entities.jobs
+edu.ucsb.cs156.organic.errors
+edu.ucsb.cs156.organic.jobs
+edu.ucsb.cs156.organic.models
+edu.ucsb.cs156.organic.repositories
+edu.ucsb.cs156.organic.repositories.jobs
+edu.ucsb.cs156.organic.services
+edu.ucsb.cs156.organic.services.jobs
