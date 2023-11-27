@@ -1,11 +1,21 @@
 import { toast } from "react-toastify";
 
+export function toggleAdminSuccess(message) {
+    console.log(message);
+    toast(message);
+}
+
+export function toggleInstructorSuccess(message) {
+    console.log(message);
+    toast(message);
+}
+
 export function cellToAxiosParamsToggleAdmin(cell){
     return{
         url: "/api/admin/users/toggleAdmin",
         method: "POST",
         params:{
-            id: cell.row.values.id
+            githubId: cell.row.values.githubId
         }
     }
 }
@@ -15,17 +25,7 @@ export function cellToAxiosParamsToggleInstructor(cell){
         url: "/api/admin/users/toggleInstructor",
         method: "POST",
         params: {
-            id: cell.row.values.id
+            githubId: cell.row.values.githubId
         }
     }
-}
-
-export function toggleAdminSuccess(message) {
-    console.log(message);
-    toast(message);
-}
-
-export function toggleInstructorSuccess(message) {
-    console.log(message);
-    toast(message);
 }
