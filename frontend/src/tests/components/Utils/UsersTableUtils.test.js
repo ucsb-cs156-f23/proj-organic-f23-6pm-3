@@ -52,7 +52,6 @@ describe("UsersTableUtils", () => {
     describe("cellToAxiosParamsDelete", () => {
 
         test("Admin returns the correct params", () => {
-            // arrange
             const cell = {row: {values:{githubId:"929"}}}
             const result = cellToAxiosParamsToggleAdmin(cell);
             expect(result).toEqual({
@@ -63,7 +62,6 @@ describe("UsersTableUtils", () => {
         });
 
         test("Instructor returns the correct params", () => {
-            // arrange
             const cell = {row: {values:{githubId:"512"}}}
             const result = cellToAxiosParamsToggleInstructor(cell);
             expect(result).toEqual({
