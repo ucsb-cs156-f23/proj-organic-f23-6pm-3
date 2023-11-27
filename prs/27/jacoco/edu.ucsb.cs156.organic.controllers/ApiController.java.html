@@ -57,29 +57,35 @@ public abstract class ApiController {
 <span class="fc" id="L57">    return mapper;</span>
   }
 
-<span class="fc" id="L60">  public ApiController() {</span>
-<span class="fc" id="L61">   mapper = mapperThatIgnoresMockitoMocks();</span>
-<span class="fc" id="L62">  }</span>
+
+  protected Object genericMessage(String message) {
+<span class="fc" id="L62">    return Map.of(&quot;message&quot;, message);</span>
+  }
+
+
+<span class="fc" id="L66">  public ApiController() {</span>
+<span class="fc" id="L67">   mapper = mapperThatIgnoresMockitoMocks();</span>
+<span class="fc" id="L68">  }</span>
 
   public static ObjectMapper mapperThatIgnoresMockitoMocks() {
-<span class="fc" id="L65">    ObjectMapper mapper = new ObjectMapper();</span>
-<span class="fc" id="L66">    mapper.registerModule(new JavaTimeModule());</span>
-<span class="fc" id="L67">    mapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector() {</span>
+<span class="fc" id="L71">    ObjectMapper mapper = new ObjectMapper();</span>
+<span class="fc" id="L72">    mapper.registerModule(new JavaTimeModule());</span>
+<span class="fc" id="L73">    mapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector() {</span>
       @Override
       public boolean hasIgnoreMarker(final AnnotatedMember m) {
-<span class="fc bfc" id="L70" title="All 4 branches covered.">        return super.hasIgnoreMarker(m) || m.getName().contains(&quot;Mockito&quot;);</span>
+<span class="fc bfc" id="L76" title="All 4 branches covered.">        return super.hasIgnoreMarker(m) || m.getName().contains(&quot;Mockito&quot;);</span>
       }
     });
-<span class="fc" id="L73">    return mapper;</span>
+<span class="fc" id="L79">    return mapper;</span>
   }
 
 
   @ExceptionHandler({ AccessDeniedException.class })
   @ResponseStatus(HttpStatus.FORBIDDEN)
   public Object handleAccessDeniedException(Throwable err) {
-<span class="fc" id="L80">    return Map.of(</span>
-<span class="fc" id="L81">      &quot;type&quot;, err.getClass().getSimpleName(),</span>
-<span class="fc" id="L82">      &quot;message&quot;, err.getMessage()</span>
+<span class="fc" id="L86">    return Map.of(</span>
+<span class="fc" id="L87">      &quot;type&quot;, err.getClass().getSimpleName(),</span>
+<span class="fc" id="L88">      &quot;message&quot;, err.getMessage()</span>
     );
   }
 

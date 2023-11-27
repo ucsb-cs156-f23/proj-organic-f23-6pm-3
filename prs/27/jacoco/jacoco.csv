@@ -10,8 +10,8 @@ organic,edu.ucsb.cs156.organic.services,GrantedAuthoritiesService,0,21,0,0,0,7,0
 organic,edu.ucsb.cs156.organic.services,SystemInfoService,0,3,0,0,0,1,0,1,0,1
 organic,edu.ucsb.cs156.organic.services,SystemInfoServiceImpl,0,30,0,0,0,10,0,3,0,3
 organic,edu.ucsb.cs156.organic.controllers,StudentsController.Status,0,15,0,0,0,2,0,1,0,1
-organic,edu.ucsb.cs156.organic.controllers,ApiController,0,68,0,0,0,21,0,8,0,8
-organic,edu.ucsb.cs156.organic.controllers,UsersController,0,16,0,0,0,4,0,2,0,2
+organic,edu.ucsb.cs156.organic.controllers,ApiController,0,72,0,0,0,22,0,9,0,9
+organic,edu.ucsb.cs156.organic.controllers,UsersController,0,106,0,4,0,12,0,8,0,6
 organic,edu.ucsb.cs156.organic.controllers,ApiController.new JacksonAnnotationIntrospector() {...},0,16,0,4,0,2,0,4,0,2
 organic,edu.ucsb.cs156.organic.controllers,CSRFController,0,5,0,0,0,2,0,2,0,2
 organic,edu.ucsb.cs156.organic.controllers,JobsController,0,52,0,4,0,12,0,6,0,4
