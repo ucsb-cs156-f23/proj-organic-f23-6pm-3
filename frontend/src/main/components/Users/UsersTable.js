@@ -39,11 +39,13 @@ const columns = [
 ];
 
 export default function UsersTable({ users, showToggleButtons }) {
+
+    // toggle admin
     // Stryker disable all : hard to test for query caching
     const toggleAdminMutation = useBackendMutation(
         cellToAxiosParamsToggleAdmin,
-        {onSuccess: toggleAdminSuccess},
-        ["/api/admin/users"]
+        { onSuccess: toggleAdminSuccess},
+        ["/api/admin/users/all"]
     );
     // Stryker restore all 
 
@@ -55,7 +57,7 @@ export default function UsersTable({ users, showToggleButtons }) {
     const toggleInstructorMutation = useBackendMutation(
         cellToAxiosParamsToggleInstructor,
         {onSuccess: toggleInstructorSuccess},
-        ["/api/admin/users"]
+        ["/api/admin/users/all"]
     );
     // Stryker restore all 
 
@@ -71,7 +73,7 @@ export default function UsersTable({ users, showToggleButtons }) {
     const retColumns = showToggleButtons ? buttonColumns : columns;
 
     return <OurTable
-        data={users}
         columns={retColumns}
+        data={users}
         testid={"UsersTable"} />;
 };
