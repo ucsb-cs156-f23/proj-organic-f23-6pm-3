@@ -1,6 +1,5 @@
 import React from "react";
 import OurTable, { ButtonColumn } from "main/components/OurTable";
-// import { formatTime } from "main/utils/dateUtils";
 
 import { useBackendMutation } from "main/utils/useBackend";
 import { cellToAxiosParamsDelete, onDeleteSuccess } from "main/utils/courseUtils"
@@ -48,12 +47,10 @@ export default function CoursesTable({ courses, currentUser }) {
         {
             Header: 'Start',
             accessor: 'start',
-            // accessor: (row) => formatTime(row.start),
         },
         {
             Header: 'End',
             accessor: 'end',
-            // accessor: (row) => formatTime(row.end),
         },
         {
             Header: 'GithubOrg',
