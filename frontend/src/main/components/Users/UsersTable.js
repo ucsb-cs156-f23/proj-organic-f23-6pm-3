@@ -39,7 +39,7 @@ const columns = [
 ];
 
 export default function UsersTable({ users, showToggleButtons }) {
-
+    
     // toggle admin
     // Stryker disable all : hard to test for query caching
     const toggleAdminMutation = useBackendMutation(
