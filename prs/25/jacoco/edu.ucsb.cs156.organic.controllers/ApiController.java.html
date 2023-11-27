@@ -56,20 +56,26 @@ public abstract class ApiController {
 <span class="fc" id="L56">    return mapper;</span>
   }
 
-<span class="fc" id="L59">  public ApiController() {</span>
-<span class="fc" id="L60">   mapper = mapperThatIgnoresMockitoMocks();</span>
-<span class="fc" id="L61">  }</span>
+
+  protected Object genericMessage(String message) {
+<span class="fc" id="L61">    return Map.of(&quot;message&quot;, message);</span>
+  }
+
+
+<span class="fc" id="L65">  public ApiController() {</span>
+<span class="fc" id="L66">   mapper = mapperThatIgnoresMockitoMocks();</span>
+<span class="fc" id="L67">  }</span>
 
   public static ObjectMapper mapperThatIgnoresMockitoMocks() {
-<span class="fc" id="L64">    ObjectMapper mapper = new ObjectMapper();</span>
-<span class="fc" id="L65">    mapper.registerModule(new JavaTimeModule());</span>
-<span class="fc" id="L66">    mapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector() {</span>
+<span class="fc" id="L70">    ObjectMapper mapper = new ObjectMapper();</span>
+<span class="fc" id="L71">    mapper.registerModule(new JavaTimeModule());</span>
+<span class="fc" id="L72">    mapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector() {</span>
       @Override
       public boolean hasIgnoreMarker(final AnnotatedMember m) {
-<span class="fc bfc" id="L69" title="All 4 branches covered.">        return super.hasIgnoreMarker(m) || m.getName().contains(&quot;Mockito&quot;);</span>
+<span class="fc bfc" id="L75" title="All 4 branches covered.">        return super.hasIgnoreMarker(m) || m.getName().contains(&quot;Mockito&quot;);</span>
       }
     });
-<span class="fc" id="L72">    return mapper;</span>
+<span class="fc" id="L78">    return mapper;</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
