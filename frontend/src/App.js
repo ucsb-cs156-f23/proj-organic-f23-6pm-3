@@ -9,6 +9,9 @@ import ProfilePage from "main/pages/ProfilePage";
 import AdminUsersPage from "main/pages/AdminUsersPage";
 import AdminJobsPage from "main/pages/AdminJobsPage";
 
+import CourseIndexPage from "main/pages/CourseIndexPage";
+import CourseCreatePage from "main/pages/CourseCreatePage";
+
 import { hasRole, useCurrentUser } from "main/utils/currentUser";
 import NotFoundPage from "main/pages/NotFoundPage";
 
@@ -67,6 +70,20 @@ function App() {
           {adminRoutes}
           {userRoutes}
           <Route path="*" element={<NotFoundPage />} />
+        {
+          hasRole(currentUser, "ROLE_USER") && (
+            <>
+              <Route exact path="/course" element={<CourseIndexPage />} />
+            </>
+          )
+        }
+        {
+          hasRole(currentUser, "ROLE_ADMIN") && (
+            <>
+              <Route exact path="/course/create" element={<CourseCreatePage />} />
+            </>
+          )
+        }
         </Routes>
       )}
     </BrowserRouter>
