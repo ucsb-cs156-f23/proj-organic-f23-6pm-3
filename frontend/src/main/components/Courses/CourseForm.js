@@ -44,7 +44,7 @@ function CourseForm({ initialContents, submitAction, buttonLabel = "Create" }) {
                         <Form.Label htmlFor="name">Name</Form.Label>
                         <Form.Control
                             data-testid="CourseForm-name"
-                            id="explantion"
+                            id="name"
                             type="text"
                             isInvalid={Boolean(errors.name)}
                             {...register("name", {
