@@ -71,8 +71,8 @@ import edu.ucsb.cs156.organic.services.jobs.JobService;
 <span class="fc" id="L71">        .build();</span>
 
         // Reference: frontend/src/components/Jobs/TestJobForm.js
-<span class="fc bfc" id="L74" title="All 4 branches covered.">        if (sleepMs &lt; 0 || sleepMs &gt; 60000) {</span>
-<span class="fc" id="L75">            throw new IllegalArgumentException(&quot;sleepMs must be between 0 and 60000&quot;);</span>
+<span class="fc bfc" id="L74" title="All 4 branches covered.">        if (sleepMs &lt; 0 || sleepMs &gt; 200000) {</span>
+<span class="fc" id="L75">            throw new IllegalArgumentException(&quot;sleepMs must be between 0 and 200000&quot;);</span>
         }
 
 <span class="fc" id="L78">        return jobService.runAsJob(testJob);</span>
