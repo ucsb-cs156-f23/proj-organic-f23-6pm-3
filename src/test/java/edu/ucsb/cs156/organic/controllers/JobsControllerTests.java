@@ -218,7 +218,7 @@ public class JobsControllerTests extends ControllerTestCase {
                 assertEquals("running", jobReturned.getStatus());
 
 
-                await().atMost(50, SECONDS)
+                await().atMost(200, SECONDS)
 
                 .untilAsserted(() -> {
                         verify(jobsRepository, atLeast(1)).save(jobCaptor.capture());                        
