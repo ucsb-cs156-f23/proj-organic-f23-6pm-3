@@ -27,7 +27,7 @@ export default function CourseCreatePage({storybook=false}) {
     objectToAxiosParams,
      { onSuccess }, 
      // Stryker disable next-line all : hard to set up test for caching
-     ["/api/course/all"] // mutation makes this key stale so that pages relying on it reload
+     ["/api/courses/all"] // mutation makes this key stale so that pages relying on it reload
      );
 
   const { isSuccess } = mutation
