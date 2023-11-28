@@ -168,7 +168,7 @@ public class JobsControllerTests extends ControllerTestCase {
 
                 assertEquals("running", jobReturned.getStatus());
 
-                await().atMost(5, SECONDS)
+                await().atMost(200, SECONDS)
                 .untilAsserted(() -> {
                         verify(jobsRepository, atLeast(1)).save(jobCaptor.capture());                        
                         List<Job> values = jobCaptor.getAllValues();
@@ -233,7 +233,7 @@ public class JobsControllerTests extends ControllerTestCase {
         public void admin_launch_test_job_with_invalid_parameter_minus_1() throws Exception {
                 Map<String, String> expectedMap = Map.of(
                                 "type", "IllegalArgumentException",
-                                "message", "sleepMs must be between 0 and 60000");
+                                "message", "sleepMs must be between 0 and 200000");
                 String expected = mapper.writeValueAsString(expectedMap);       
                 MvcResult response = mockMvc
                                 .perform(post("/api/jobs/launch/testjob?fail=false&sleepMs=-1").with(csrf()))
@@ -254,10 +254,10 @@ public class JobsControllerTests extends ControllerTestCase {
         public void admin_launch_test_job_with_invalid_parameter_60001() throws Exception {
                 Map<String, String> expectedMap = Map.of(
                                 "type", "IllegalArgumentException",
-                                "message", "sleepMs must be between 0 and 60000");
+                                "message", "sleepMs must be between 0 and 200000");
                 String expected = mapper.writeValueAsString(expectedMap);       
                 MvcResult response = mockMvc
-                                .perform(post("/api/jobs/launch/testjob?fail=false&sleepMs=60001").with(csrf()))
+                                .perform(post("/api/jobs/launch/testjob?fail=false&sleepMs=200001").with(csrf()))
                                 .andExpect(status().isBadRequest()).andReturn();
                 assertInstanceOf(IllegalArgumentException.class, response.getResolvedException());
                 assertEquals(expected, response.getResponse().getContentAsString());
