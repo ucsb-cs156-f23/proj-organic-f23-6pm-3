@@ -45,7 +45,7 @@ export default function UsersTable({ users, showToggleButtons }) {
     const toggleAdminMutation = useBackendMutation(
         cellToAxiosParamsToggleAdmin,
         { onSuccess: toggleAdminSuccess},
-        ["/api/admin/users/all"]
+        ["/api/admin/users"]
     );
     // Stryker restore all 
 
@@ -57,7 +57,7 @@ export default function UsersTable({ users, showToggleButtons }) {
     const toggleInstructorMutation = useBackendMutation(
         cellToAxiosParamsToggleInstructor,
         {onSuccess: toggleInstructorSuccess},
-        ["/api/admin/users/all"]
+        ["/api/admin/users"]
     );
     // Stryker restore all 
 
