@@ -144,7 +144,30 @@ public class CoursesController extends ApiController {
         return courseStaff;
     }
 
-    //Get by ID
+    // DELETE endpoint for staff
+    @Operation(summary = "Delete staff from a course")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_INSTRUCTOR')")
+    @DeleteMapping("/staff")
+    public Object deleteStaff(
+            @Parameter(name = "id") @RequestParam Long id) throws JsonProcessingException {
+        // Find staff member by id (including courses they're in)
+        Staff staff = courseStaffRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Staff.class, id.toString()));
+        
+        // If instructor && not admin, check: if user is staff in the same course of the staff member they're trying to remove
+        User u = getCurrentUser().getUser();
+        if (!u.isAdmin()) {
+                Long courseId = staff.getCourseId();
+                log.info("staff={}\nthe parameter id={}", staff, id);
+                courseStaffRepository.findByCourseIdAndGithubId(courseId, u.getGithubId())
+                .orElseThrow(() -> new AccessDeniedException( // Throw error = find fails. they aren't in the same course
+                        String.format("User %s is not authorized to delete staff of id %d", u.getGithubLogin(), id)));
+        }
+        courseStaffRepository.delete(staff);
+        return genericMessage("Staff with id %s deleted".formatted(id));
+    }
+
+    // Get by ID
     @Operation(summary= "Get a single course by Id")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping("")

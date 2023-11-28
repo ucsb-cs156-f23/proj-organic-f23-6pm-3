@@ -415,4 +415,119 @@ public class CoursesControllerTests extends ControllerTestCase {
             // assert
             verify(courseRepository, times(1)).findById(eq(1L));
         }
+
+        // Tests for DELETE /api/courses/staff?id=...
+        @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
+        public void admin_can_delete_staff() throws Exception {
+                // arrange
+                User user = User.builder().githubId(12345).githubLogin("jakedel").build();
+
+                Staff staff = Staff.builder()
+                                .id(99L)
+                                .courseId(testcourse_1.getId())
+                                .githubId(user.getGithubId())
+                                .user(user)
+                                .build();
+
+                when(courseStaffRepository.findById(eq(99L))).thenReturn(Optional.of(staff));
+
+                // act
+                MvcResult response = mockMvc.perform(
+                                delete("/api/courses/staff?id=99")
+                                                .with(csrf()))
+                                .andExpect(status().isOk()).andReturn();
+
+                // assert
+                verify(courseStaffRepository, times(1)).findById(99L);
+                verify(courseStaffRepository, times(1)).delete(any());
+
+                Map<String, Object> json = responseToJson(response);
+                assertEquals("Staff with id 99 deleted", json.get("message"));
+        }
+
+        @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
+        public void admin_tries_to_delete_non_existant_staff_and_gets_right_error_message() throws Exception {
+                // arrange
+
+                when(courseStaffRepository.findById(eq(99L))).thenReturn(Optional.empty());
+
+                // act
+                MvcResult response = mockMvc.perform(
+                                delete("/api/courses/staff?id=99")
+                                                .with(csrf()))
+                                .andExpect(status().isNotFound()).andReturn();
+
+                // assert
+                verify(courseStaffRepository, times(1)).findById(99L);
+                Map<String, Object> json = responseToJson(response);
+                assertEquals("Staff with id 99 not found", json.get("message"));
+        }
+
+        
+
+        @WithMockUser(roles = { "INSTRUCTOR" })
+        @Test
+        public void notadmin_notstaff_cannot_delete_an_existing_staff() throws Exception {
+                User currentUser = currentUserService.getCurrentUser().getUser();
+                User user1 = User.builder().githubId(24689).githubLogin("randomGithubUsername").build();
+        
+                Staff courseStaff1 = Staff.builder()
+                                .id(111L)
+                                .courseId(1L)
+                                .githubId(user1.getGithubId())
+                                .user(user1)
+                                .build();
+        
+                when(courseStaffRepository.findById(eq(courseStaff1.getId()))).thenReturn(Optional.of(courseStaff1));
+                when(courseStaffRepository.findByCourseIdAndGithubId(testcourse_1.getId(),
+                                currentUser.getGithubId())).thenReturn(Optional.empty());
+                
+                mockMvc.perform(delete("/api/courses/staff?id=111").with(csrf()))
+                        .andExpect(status().isForbidden());
+        
+                verify(courseStaffRepository, times(1)).findById(111L);
+                verify(courseStaffRepository, times(1)).findByCourseIdAndGithubId(testcourse_1.getId(),
+                                currentUser.getGithubId());
+        }
+                      
+
+        @WithMockUser(roles = { "INSTRUCTOR" })
+        @Test
+        public void staff_can_delete_staff() throws Exception {
+                User currentUser = currentUserService.getCurrentUser().getUser();
+                User user1 = User.builder().githubId(24689).githubLogin("randomGithubUsername").build();
+                Staff courseStaff1 = Staff.builder()
+                                .id(111L)
+                                .courseId(testcourse_1.getId())
+                                .githubId(user1.getGithubId())
+                                .user(user1)
+                                .build();
+                Staff userStaff = Staff.builder()
+                                .id(222L)
+                                .courseId(testcourse_1.getId())
+                                .githubId(currentUser.getGithubId())
+                                .user(currentUser)
+                                .build();
+
+                when(courseStaffRepository.findById(eq(courseStaff1.getId()))).thenReturn(Optional.of(courseStaff1));
+                when(courseStaffRepository.findByCourseIdAndGithubId(testcourse_1.getId(),
+                                currentUser.getGithubId())).thenReturn(Optional.of(userStaff));
+
+                // act
+                MvcResult response = mockMvc.perform(
+                                delete("/api/courses/staff?id=111")
+                                                .with(csrf()))
+                                .andExpect(status().isOk()).andReturn();
+
+                // assert
+                verify(courseStaffRepository, times(1)).findById(111L);
+                verify(courseStaffRepository, times(1)).findByCourseIdAndGithubId(testcourse_1.getId(),
+                                currentUser.getGithubId());
+                verify(courseStaffRepository, times(1)).delete(any());
+                Map<String, Object> json = responseToJson(response);
+                assertEquals("Staff with id 111 deleted", json.get("message"));
+        }
+
 }
