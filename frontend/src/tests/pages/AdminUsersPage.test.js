@@ -11,7 +11,6 @@ import usersFixtures from "fixtures/usersFixtures";
 
 describe("AdminUsersPage tests",  () => {
     const queryClient = new QueryClient();
-
     const axiosMock = new AxiosMockAdapter(axios);
 
     beforeEach(()=>{
