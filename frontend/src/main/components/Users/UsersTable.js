@@ -1,6 +1,8 @@
 import React from "react";
-import OurTable from "main/components/OurTable"
+import OurTable, {ButtonColumn} from "main/components/OurTable"
+import { useBackendMutation } from "main/utils/useBackend";
 import { formatTime } from "main/utils/dateUtils";
+import { cellToAxiosParamsToggleAdmin, cellToAxiosParamsToggleInstructor, toggleAdminSuccess, toggleInstructorSuccess } from "../Utils/UsersTableUtils";
 
 const columns = [
     {
@@ -29,11 +31,49 @@ const columns = [
         id: 'admin',
         accessor: (row, _rowIndex) => String(row.admin) // hack needed for boolean values to show up
     },
+    {
+        Header: 'Instructor',
+        id: 'instructor',
+        accessor: (row, _rowIndex) => String(row.instructor) // hack needed for boolean values to show up
+    }
 ];
 
-export default function UsersTable({ users }) {
+export default function UsersTable({ users, showToggleButtons }) {
+    
+    // toggle admin
+    // Stryker disable all : hard to test for query caching
+    const toggleAdminMutation = useBackendMutation(
+        cellToAxiosParamsToggleAdmin,
+        { onSuccess: toggleAdminSuccess},
+        ["/api/admin/users"]
+    );
+    // Stryker restore all 
+
+    // Stryker disable next-line all : TODO try to make a good test for this
+    const toggleAdminCallback = async (cell) => {toggleAdminMutation.mutate(cell);}
+
+    // toggle instructor
+    // Stryker disable all : hard to test for query caching
+    const toggleInstructorMutation = useBackendMutation(
+        cellToAxiosParamsToggleInstructor,
+        {onSuccess: toggleInstructorSuccess},
+        ["/api/admin/users"]
+    );
+    // Stryker restore all 
+
+    // Stryker disable next-line all : TODO try to make a good test for this
+    const toggleInstructorCallback = async (cell) => {toggleInstructorMutation.mutate(cell);}
+
+    const buttonColumns = [
+        ...columns,
+        ButtonColumn("toggle-admin", "primary", toggleAdminCallback, "UsersTable"),
+        ButtonColumn("toggle-instructor", "primary", toggleInstructorCallback, "UsersTable")
+    ]
+
+    const retColumns = showToggleButtons ? buttonColumns : columns;
+
     return <OurTable
+        columns={retColumns}
         data={users}
-        columns={columns}
         testid={"UsersTable"} />;
 };
