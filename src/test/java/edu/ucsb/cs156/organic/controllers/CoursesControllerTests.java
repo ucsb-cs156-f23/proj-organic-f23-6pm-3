@@ -96,6 +96,26 @@ public class CoursesControllerTests extends ControllerTestCase {
                         .end(LocalDateTime.parse("2029-03-31T00:00:00"))
                         .githubOrg("ucsb-PSTAT131-w24")
                         .build();
+                        
+        Course course1 = Course.builder()
+                        .id(1L)
+                        .name("CS156")
+                        .school("UCSB")
+                        .term("F23")
+                        .start(LocalDateTime.parse("2023-09-01T00:00:00"))
+                        .end(LocalDateTime.parse("2023-12-31T00:00:00"))
+                        .githubOrg("ucsb-cs156-f23")
+                        .build();
+
+        Course course2 = Course.builder()
+                        .id(1L)
+                        .name("CS148")
+                        .school("UCSB")
+                        .term("S24")
+                        .start(LocalDateTime.parse("2024-01-01T00:00:00"))
+                        .end(LocalDateTime.parse("2024-03-31T00:00:00"))
+                        .githubOrg("ucsb-cs148-w24")
+                        .build();
 
         @WithMockUser(roles = { "ADMIN" })
         @Test
