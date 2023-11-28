@@ -62,6 +62,7 @@ public class UserInfoController extends ApiController {
     return user.getEmails();
   }
 
+  
   @Operation(summary = "Get courses for which current user is on the staff")
   @PreAuthorize("hasRole('ROLE_USER')")
   @GetMapping("/staffedCourses")
