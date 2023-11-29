@@ -31,11 +31,10 @@ import edu.ucsb.cs156.organic.errors.EntityNotFoundException;
 
 import org.springframework.security.access.AccessDeniedException;
 import java.time.LocalDateTime;
-import javax.validation.Valid;
 
-import java.util.Optional;
 
 import javax.transaction.Transactional;
+
 import javax.validation.Valid;
 
 import java.util.Optional;
@@ -76,8 +75,8 @@ public class CoursesController extends ApiController {
             @Parameter(name = "name", description ="course name, e.g. CMPSC 156" ) @RequestParam String name,
             @Parameter(name = "school", description ="school abbreviation e.g. UCSB" ) @RequestParam String school,
             @Parameter(name = "term", description = "quarter or semester, e.g. F23") @RequestParam String term,
-            @Parameter(name = "startDate", description = "in iso format, i.e. YYYY-mm-ddTHH:MM:SS; e.g. 2023-10-01T00:00:00 see https://en.wikipedia.org/wiki/ISO_8601") @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
-            @Parameter(name = "endDate", description = "in iso format, i.e. YYYY-mm-ddTHH:MM:SS; e.g. 2023-12-31T11:59:59 see https://en.wikipedia.org/wiki/ISO_8601") @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
+            @Parameter(name = "start", description = "in iso format, i.e. YYYY-mm-ddTHH:MM:SS; e.g. 2023-10-01T00:00:00 see https://en.wikipedia.org/wiki/ISO_8601") @RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
+            @Parameter(name = "end", description = "in iso format, i.e. YYYY-mm-ddTHH:MM:SS; e.g. 2023-12-31T11:59:59 see https://en.wikipedia.org/wiki/ISO_8601") @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end,
             @Parameter(name = "githubOrg", description = "for example ucsb-cs156-f23" ) @RequestParam String githubOrg)
             throws JsonProcessingException {
 
@@ -85,8 +84,8 @@ public class CoursesController extends ApiController {
                 .name(name)
                 .school(school)
                 .term(term)
-                .startDate(startDate)
-                .endDate(endDate)
+                .start(start)
+                .end(end)
                 .githubOrg(githubOrg)
                 .build();
 
@@ -147,6 +146,53 @@ public class CoursesController extends ApiController {
         return courseStaff;
     }
 
+
+    //PUT
+    @Operation(summary = "Update a course")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_INSTRUCTOR')") 
+    @PutMapping("/update")
+    public Course updateCourse(
+            @Parameter(name = "courseId") @RequestParam Long courseId,
+            @RequestBody @Valid Course incoming) throws JsonProcessingException {
+
+        User user = getCurrentUser().getUser();
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new EntityNotFoundException(Course.class, courseId.toString()));
+        courseStaffRepository.findByCourseIdAndGithubId(courseId, user.getGithubId())
+        .orElseThrow(() -> new AccessDeniedException(
+            String.format("%s is not allowed to update course %d", user.getGithubLogin(), courseId)));
+
+        course.setName(incoming.getName());
+        course.setSchool(incoming.getSchool());
+        course.setTerm(incoming.getTerm());
+        course.setStart(incoming.getStart());
+        course.setEnd(incoming.getEnd());
+        course.setGithubOrg(incoming.getGithubOrg());
+
+        courseRepository.save(course);
+        return course;
+    }
+
+    @Transactional
+    @Operation(summary = "Delete a course")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_INSTRUCTOR')")
+    @DeleteMapping("/delete")
+    public Object deleteCourse(
+            @Parameter(name = "courseId") @RequestParam Long courseId) throws JsonProcessingException {
+
+        User u = getCurrentUser().getUser();
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new EntityNotFoundException(Course.class, courseId.toString()));
+        if(!u.isAdmin())
+            courseStaffRepository.findByCourseIdAndGithubId(courseId, u.getGithubId())
+            .orElseThrow(() -> new AccessDeniedException(
+                String.format("%s is not allowed to delete course %d", u.getGithubLogin(), courseId)));
+
+        courseRepository.delete(course);
+        courseStaffRepository.deleteByCourseId(courseId);
+        return genericMessage("Course with id %s deleted".formatted(courseId));
+    }
+
     // DELETE endpoint for staff
     @Operation(summary = "Delete staff from a course")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_INSTRUCTOR')")
@@ -190,29 +236,5 @@ public class CoursesController extends ApiController {
     }
 
 
-    //PUT
-    @Operation(summary = "Update a course")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_INSTRUCTOR')") 
-    @PutMapping("/update")
-    public Course updateCourse(
-            @Parameter(name = "courseId") @RequestParam Long courseId,
-            @RequestBody @Valid Course incoming) throws JsonProcessingException {
 
-        User user = getCurrentUser().getUser();
-        Course course = courseRepository.findById(courseId)
-                .orElseThrow(() -> new EntityNotFoundException(Course.class, courseId.toString()));
-        courseStaffRepository.findByCourseIdAndGithubId(courseId, user.getGithubId())
-        .orElseThrow(() -> new AccessDeniedException(
-            String.format("%s is not allowed to update course %d", user.getGithubLogin(), courseId)));
-
-        course.setName(incoming.getName());
-        course.setSchool(incoming.getSchool());
-        course.setTerm(incoming.getTerm());
-        course.setStartDate(incoming.getStartDate());
-        course.setEndDate(incoming.getEndDate());
-        course.setGithubOrg(incoming.getGithubOrg());
-
-        courseRepository.save(course);
-        return course;
-    }
 }
