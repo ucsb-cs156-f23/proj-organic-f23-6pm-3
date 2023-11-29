@@ -30,6 +30,11 @@ basic_loggedInRegularUser.args = {
     currentUser: currentUserFixtures.userOnly
 };
 
+export const basic_loggedInInstructorUser = Template.bind({});
+basic_loggedInInstructorUser.args = {
+    currentUser: currentUserFixtures.instructorUser
+};
+
 export const extraLinks_neitherH2NorSwagger = Template.bind({});
 extraLinks_neitherH2NorSwagger.args = {
     currentUser: currentUserFixtures.userOnly,

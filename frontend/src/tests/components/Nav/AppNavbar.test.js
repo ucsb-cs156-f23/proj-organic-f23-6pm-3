@@ -22,6 +22,7 @@ describe("AppNavbar tests", () => {
         );
 
         expect(await screen.findByText("Welcome, cgaucho")).toBeInTheDocument();
+        expect(screen.queryByText("Courses")).not.toBeInTheDocument();
     });
 
     test("renders correctly for admin user", async () => {
@@ -37,8 +38,27 @@ describe("AppNavbar tests", () => {
         );
 
         expect(await screen.findByText("Welcome, pconrad")).toBeInTheDocument();
+        expect(screen.getByText("Courses")).toBeInTheDocument();
         const adminMenu = screen.getByTestId("appnavbar-admin-dropdown");
-        expect(adminMenu).toBeInTheDocument();        
+        expect(adminMenu).toBeInTheDocument();       
+    });
+
+    test("renders correctly for instructor user", async () => {
+        const currentUser = currentUserFixtures.instructorUser;
+        const doLogin = jest.fn();
+
+        render(
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter>
+                    <AppNavbar currentUser={currentUser} doLogin={doLogin} />
+                </MemoryRouter>
+            </QueryClientProvider>
+        );
+
+        expect(await screen.findByText("Welcome, pconrad")).toBeInTheDocument();
+        expect(screen.getByText("Courses")).toBeInTheDocument();
+        const adminMenu = screen.queryByTestId("appnavbar-admin-dropdown");
+        expect(adminMenu).not.toBeInTheDocument();      
     });
 
     test("renders correctly for user that hasn't signed in", async () => {
@@ -57,6 +77,7 @@ describe("AppNavbar tests", () => {
         expect(welcome).not.toBeInTheDocument();
         const adminMenu = screen.queryByTestId("appnavbar-admin-dropdown");
         expect(adminMenu).not.toBeInTheDocument();
+        expect(screen.queryByText("Courses")).not.toBeInTheDocument();
     });
 
     test("renders H2Console and Swagger links correctly", async () => {
