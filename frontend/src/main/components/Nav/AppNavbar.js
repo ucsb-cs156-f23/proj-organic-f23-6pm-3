@@ -48,12 +48,17 @@ export default function AppNavbar({ currentUser, systemInfo, doLogout, currentUr
                   <NavDropdown title="Admin" id="appnavbar-admin-dropdown" data-testid="appnavbar-admin-dropdown" >
                     <NavDropdown.Item href="/admin/users">Users</NavDropdown.Item>
                     <NavDropdown.Item href="/admin/jobs">Manage Jobs</NavDropdown.Item>
-                    <NavDropdown.Item href="/admin/courses">Courses</NavDropdown.Item>
                   </NavDropdown>
                 )
               }
             </Nav>
-
+            {
+              (hasRole(currentUser, "ROLE_ADMIN") || hasRole(currentUser, "ROLE_INSTRUCTOR")) && (
+                <>
+                  <Nav.Link as={Link} to="/courses">Courses</Nav.Link>
+                </>
+              )
+            }
             <Nav className="ml-auto">
               {
                 currentUser && currentUser.loggedIn ? (

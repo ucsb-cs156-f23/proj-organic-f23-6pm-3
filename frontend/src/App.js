@@ -21,13 +21,18 @@ function App() {
     <>
       <Route path="/admin/users" element={<AdminUsersPage />} />
       <Route path="/admin/jobs" element={<AdminJobsPage />} />
-      <Route path="/admin/courses" element={<CourseIndexPage />} />
     </>
   ) : null;
 
   const userRoutes = hasRole(currentUser, "ROLE_USER") ? (
     <>
       <Route path="/profile" element={<ProfilePage />} />
+    </>
+  ) : null;
+
+  const courseRoutes = (hasRole(currentUser, "ROLE_ADMIN") || hasRole(currentUser, "ROLE_INSTRUCTOR")) ? (
+    <>
+      <Route path="/courses" element={<CourseIndexPage />} />
     </>
   ) : null;
 
@@ -68,6 +73,7 @@ function App() {
         <Routes>
           {homeRoute}
           {adminRoutes}
+          {courseRoutes}
           {userRoutes}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
