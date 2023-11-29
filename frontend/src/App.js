@@ -11,6 +11,7 @@ import AdminJobsPage from "main/pages/AdminJobsPage";
 
 import { hasRole, useCurrentUser } from "main/utils/currentUser";
 import NotFoundPage from "main/pages/NotFoundPage";
+import CourseIndexPage from "main/pages/Courses/CourseIndexPage";
 
 function App() {
   const { data: currentUser } = useCurrentUser();
@@ -19,6 +20,7 @@ function App() {
     <>
       <Route path="/admin/users" element={<AdminUsersPage />} />
       <Route path="/admin/jobs" element={<AdminJobsPage />} />
+      <Route path="/admin/courses" element={<CourseIndexPage />} />
     </>
   ) : null;
 
