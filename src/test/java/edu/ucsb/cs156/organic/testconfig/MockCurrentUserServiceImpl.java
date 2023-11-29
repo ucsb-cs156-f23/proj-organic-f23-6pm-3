@@ -23,7 +23,7 @@ import liquibase.pro.packaged.em;
 import static org.mockito.Mockito.when;
 
 @Slf4j
-@Service("currentUser")
+@Service("currentUserMock")
 public class MockCurrentUserServiceImpl extends CurrentUserServiceImpl {
 
   public User getMockUser(SecurityContext securityContext, Authentication authentication) {
