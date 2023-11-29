@@ -19,3 +19,5 @@ organic,edu.ucsb.cs156.organic.controllers,CoursesController,0,281,0,6,0,59,0,18
 organic,edu.ucsb.cs156.organic.controllers,UserInfoController,0,54,0,0,0,14,0,6,0,6
 organic,edu.ucsb.cs156.organic.controllers,SystemInfoController,0,7,0,0,0,2,0,2,0,2
 organic,edu.ucsb.cs156.organic.controllers,StudentsController,0,201,0,4,0,41,0,10,0,8
+organic,edu.ucsb.cs156.organic.Interceptors,RoleUserInterceptorAppConfig,0,9,0,0,0,3,0,2,0,2
+organic,edu.ucsb.cs156.organic.Interceptors,RoleUserInterceptor,0,99,0,12,0,24,0,10,0,4
