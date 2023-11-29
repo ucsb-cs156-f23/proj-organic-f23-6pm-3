@@ -15,6 +15,11 @@ import CoursesCreatePage from "main/pages/CoursesCreatePage";
 import { hasRole, useCurrentUser } from "main/utils/currentUser";
 import NotFoundPage from "main/pages/NotFoundPage";
 
+import CoursesIndexPage from "main/pages/Courses/CoursesIndexPage";
+import CoursesEditPage from "main/pages/Courses/CoursesEditPage";
+
+
+
 function App() {
   const { data: currentUser } = useCurrentUser();
 
@@ -70,13 +75,20 @@ function App() {
           {adminRoutes}
           {userRoutes}
           <Route path="*" element={<NotFoundPage />} />
-        {
-          hasRole(currentUser, "ROLE_USER") && (
-            <>
-              <Route exact path="/courses" element={<CoursesIndexPage />} />
-            </>
-          )
-        }
+          {
+            hasRole(currentUser, "ROLE_USER") && (
+              <>
+                <Route path="/courses" element={<CoursesIndexPage />} />
+              </>
+            )
+          }
+          {
+            hasRole(currentUser, "ROLE_ADMIN") && (
+              <>
+                <Route path="/courses/edit/:id" element={<CoursesEditPage />} />
+              </>
+            )
+          }
         {
           hasRole(currentUser, "ROLE_ADMIN") && (
             <>
