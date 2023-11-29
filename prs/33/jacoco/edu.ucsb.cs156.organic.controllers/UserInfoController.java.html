@@ -62,12 +62,13 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 <span class="fc" id="L62">    return user.getEmails();</span>
   }
 
+  
   @Operation(summary = &quot;Get courses for which current user is on the staff&quot;)
   @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
   @GetMapping(&quot;/staffedCourses&quot;)
   public Iterable&lt;Course&gt; getStaffedCourses() {
-<span class="fc" id="L69">    User user = super.getCurrentUser().getUser();</span>
-<span class="fc" id="L70">    return userRepository.findCoursesStaffedByUser(user.getGithubId());  </span>
+<span class="fc" id="L70">    User user = super.getCurrentUser().getUser();</span>
+<span class="fc" id="L71">    return userRepository.findCoursesStaffedByUser(user.getGithubId());  </span>
   }
 
 }

@@ -10,6 +10,15 @@ import org.hibernate.annotations.FetchMode;
 import java.time.Instant;
 import java.util.List;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.AccessLevel;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -24,8 +33,10 @@ public class User {
   private String pictureUrl;
   private String fullName;
   private boolean emailVerified;
-  private boolean admin;
-  private boolean instructor;
+  @Builder.Default
+  private boolean admin=false;
+  @Builder.Default
+  private boolean instructor=false;
   private String accessToken;
 
   @OneToMany(mappedBy = &quot;user&quot;, cascade = CascadeType.REMOVE)  @Fetch(FetchMode.JOIN)
@@ -36,7 +47,8 @@ public class User {
 
   @Override
   public String toString() {
-<span class="fc" id="L39">    return String.format(&quot;User: githubId=%d githubLogin=%s admin=%s&quot;, githubId, githubLogin, this.admin);</span>
+<span class="fc" id="L50">    return String.format(&quot;User: githubId=%d githubLogin=%s admin=%s&quot;, githubId, githubLogin, this.admin);</span>
   }
 }
+
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
