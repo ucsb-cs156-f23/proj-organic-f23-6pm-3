@@ -173,7 +173,7 @@ public class CoursesController extends ApiController {
         return course;
     }
 
-    //DELETE course
+    @Transactional
     @Operation(summary = "Delete a course")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_INSTRUCTOR')")
     @DeleteMapping("/delete")
