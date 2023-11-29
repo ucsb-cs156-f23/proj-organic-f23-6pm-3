@@ -8,6 +8,8 @@ import ProfilePage from "main/pages/ProfilePage";
 
 import AdminUsersPage from "main/pages/AdminUsersPage";
 import AdminJobsPage from "main/pages/AdminJobsPage";
+import CourseIndexPage from "main/pages/Courses/CourseIndexPage";
+
 
 import { hasRole, useCurrentUser } from "main/utils/currentUser";
 import NotFoundPage from "main/pages/NotFoundPage";
@@ -19,6 +21,7 @@ function App() {
     <>
       <Route path="/admin/users" element={<AdminUsersPage />} />
       <Route path="/admin/jobs" element={<AdminJobsPage />} />
+      <Route path="/admin/courses" element={<CourseIndexPage />} />
     </>
   ) : null;
 
