@@ -76,6 +76,27 @@ public class CoursesControllerTests extends ControllerTestCase {
         @Autowired
         ObjectMapper objectMapper;
 
+
+        Course course1 = Course.builder()
+                        .id(1L)
+                        .name("CS156")
+                        .school("UCSB")
+                        .term("F23")
+                        .start(LocalDateTime.parse("2023-09-01T00:00:00"))
+                        .end(LocalDateTime.parse("2023-12-31T00:00:00"))
+                        .githubOrg("ucsb-cs156-f23")
+                        .build();
+
+        Course course2 = Course.builder()
+                        .id(1L)
+                        .name("CS148")
+                        .school("UCSB")
+                        .term("S24")
+                        .start(LocalDateTime.parse("2024-01-01T00:00:00"))
+                        .end(LocalDateTime.parse("2024-03-31T00:00:00"))
+                        .githubOrg("ucsb-cs148-w24")
+                        .build();
+
         Course testcourse_1 = Course.builder()
                         .id(1L)
                         .name("CS156")
@@ -529,5 +550,133 @@ public class CoursesControllerTests extends ControllerTestCase {
                 Map<String, Object> json = responseToJson(response);
                 assertEquals("Staff with id 111 deleted", json.get("message"));
         }
+        //Test for PUT
+        @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
+        public void admin_can_update_an_existing_course() throws Exception {
+                // arrange
+
+                User user = currentUserService.getCurrentUser().getUser();
+
+                Staff courseStaff1 = Staff.builder()
+                                .id(111L)
+                                .courseId(course1.getId())
+                                .githubId(user.getGithubId())    
+                                .user(user)
+                                .build();
+
+                Course courseAfter = Course.builder()
+                                .id(1L)
+                                .name("CS36")
+                                .school("TUCSB")
+                                .term("M25")
+                                .start(LocalDateTime.parse("2024-09-01T00:00:00"))
+                                .end(LocalDateTime.parse("2025-12-31T00:00:00"))
+                                .githubOrg("ucsb-cs36-m25")
+                                .build();
+
+                String requestBody = mapper.writeValueAsString(courseAfter);
+
+                when(courseStaffRepository.findByCourseIdAndGithubId(eq(course1.getId()),eq(courseStaff1.getGithubId()))).thenReturn(Optional.of(courseStaff1));
+                when(courseRepository.findById(eq(course1.getId()))).thenReturn(Optional.of(course1));
+               
+
+                // act
+                MvcResult response = mockMvc.perform(
+                                put("/api/courses/update?courseId=1")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(requestBody)
+                                                .with(csrf()))
+                                .andExpect(status().isOk()).andReturn();
+
+                // assert
+                verify(courseStaffRepository, times(1)).findByCourseIdAndGithubId(eq(course1.getId()),eq(courseStaff1.getGithubId()));
+                verify(courseRepository, times(1)).findById(1L);
+                verify(courseRepository, times(1)).save(courseAfter); 
+                
+                String responseString = response.getResponse().getContentAsString();
+                assertEquals(requestBody, responseString);
+        }
+
+        @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
+        public void admin_cannot_edit_course_that_does_not_exist() throws Exception {
+                // arrange
+
+                Course course = Course.builder()
+                                .id(67L)
+                                .name("CS16")
+                                .school("TUCSB")
+                                .term("F23")
+                                .start(LocalDateTime.parse("2023-09-01T00:00:00"))
+                                .end(LocalDateTime.parse("2023-12-31T00:00:00"))
+                                .githubOrg("ucsb-cs16-f23")
+                                .build();
+
+                String requestBody = mapper.writeValueAsString(course);
+
+                when(courseRepository.findById(eq(67L))).thenReturn(Optional.empty());
+
+                // act
+                MvcResult response = mockMvc.perform(
+                                put("/api/courses/update?courseId=67")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(requestBody)
+                                                .with(csrf()))
+                                .andExpect(status().isNotFound()).andReturn();
+
+                // assert
+                verify(courseRepository, times(1)).findById(67L);
+                Map<String, Object> json = responseToJson(response);
+                assertEquals("Course with id 67 not found", json.get("message"));
+
+        }
+        
+        @WithMockUser(roles = { "INSTRUCTOR" })
+        @Test
+        public void nonstaff_cannot_edit_an_existing_course() throws Exception {
+                // arrange
+
+                User user1 = User.builder().githubId(12345).githubLogin("not-cgaucho").build();
+
+                Staff courseStaff1 = Staff.builder()
+                                .id(111L)
+                                .courseId(1L)
+                                .githubId(user1.getGithubId())
+                                .user(user1)
+                                .build();
+
+                ArrayList<Staff> expectedCourseStaff = new ArrayList<>();
+                expectedCourseStaff.addAll(Arrays.asList(courseStaff1));
+
+                Course courseAfter = Course.builder()
+                                .id(1L)
+                                .name("CS36")
+                                .school("TUCSB")
+                                .term("M25")
+                                .start(LocalDateTime.parse("2024-09-01T00:00:00"))
+                                .end(LocalDateTime.parse("2025-12-31T00:00:00"))
+                                .githubOrg("ucsb-cs36-m25")
+                                .build();
+
+                String requestBody = mapper.writeValueAsString(courseAfter);
+
+                when(courseRepository.findById(eq(course1.getId()))).thenReturn(Optional.of(course1));
+                when(courseStaffRepository.findByCourseId(eq(course1.getId()))).thenReturn(expectedCourseStaff);
+
+                // act
+                MvcResult response = mockMvc.perform(
+                                put("/api/courses/update?courseId=1")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(requestBody)
+                                                .with(csrf()))
+                                .andExpect(status().isForbidden()).andReturn();
+
+                // assert
+                verify(courseRepository, times(1)).findById(1L);
+                Map<String, Object> json = responseToJson(response);
+                assertEquals("cgaucho is not allowed to update course 1", json.get("message"));
+        }
+
 
 }

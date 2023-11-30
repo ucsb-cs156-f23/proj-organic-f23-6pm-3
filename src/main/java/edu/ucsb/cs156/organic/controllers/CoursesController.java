@@ -32,7 +32,9 @@ import edu.ucsb.cs156.organic.errors.EntityNotFoundException;
 import org.springframework.security.access.AccessDeniedException;
 import java.time.LocalDateTime;
 
+
 import javax.transaction.Transactional;
+
 import javax.validation.Valid;
 
 import java.util.Optional;
@@ -144,6 +146,33 @@ public class CoursesController extends ApiController {
         return courseStaff;
     }
 
+
+    //PUT
+    @Operation(summary = "Update a course")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_INSTRUCTOR')") 
+    @PutMapping("/update")
+    public Course updateCourse(
+            @Parameter(name = "courseId") @RequestParam Long courseId,
+            @RequestBody @Valid Course incoming) throws JsonProcessingException {
+
+        User user = getCurrentUser().getUser();
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new EntityNotFoundException(Course.class, courseId.toString()));
+        courseStaffRepository.findByCourseIdAndGithubId(courseId, user.getGithubId())
+        .orElseThrow(() -> new AccessDeniedException(
+            String.format("%s is not allowed to update course %d", user.getGithubLogin(), courseId)));
+
+        course.setName(incoming.getName());
+        course.setSchool(incoming.getSchool());
+        course.setTerm(incoming.getTerm());
+        course.setStart(incoming.getStart());
+        course.setEnd(incoming.getEnd());
+        course.setGithubOrg(incoming.getGithubOrg());
+
+        courseRepository.save(course);
+        return course;
+    }
+
     // DELETE endpoint for staff
     @Operation(summary = "Delete staff from a course")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_INSTRUCTOR')")
@@ -185,6 +214,7 @@ public class CoursesController extends ApiController {
         }
         return course;
     }
+
 
 
 }
