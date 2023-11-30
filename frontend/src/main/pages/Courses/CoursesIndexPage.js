@@ -33,13 +33,13 @@ export default function CoursesIndexPage() {
       []
     );
 
-    return (
-      <BasicLayout>
-        <div className="pt-2">
-          {createButton()}
-          <h1>Courses</h1>
-          <CoursesTable courses={courses} currentUser={currentUser} />
-        </div>
-      </BasicLayout>
-    )
+  return (
+    <BasicLayout>
+      <div className="pt-2">
+        {createButton()}
+        <h1>Courses</h1>
+        <CoursesTable courses={courses} currentUser={currentUser} />
+      </div>
+    </BasicLayout>
+  )
 }
