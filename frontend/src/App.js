@@ -11,14 +11,10 @@ import AdminJobsPage from "main/pages/AdminJobsPage";
 
 import CoursesIndexPage from "main/pages/CoursesIndexPage";
 import CoursesCreatePage from "main/pages/CoursesCreatePage";
+import CoursesEditPage from "main/pages/Courses/CoursesEditPage";
 
 import { hasRole, useCurrentUser } from "main/utils/currentUser";
 import NotFoundPage from "main/pages/NotFoundPage";
-
-import CoursesIndexPage from "main/pages/Courses/CoursesIndexPage";
-import CoursesEditPage from "main/pages/Courses/CoursesEditPage";
-
-
 
 function App() {
   const { data: currentUser } = useCurrentUser();

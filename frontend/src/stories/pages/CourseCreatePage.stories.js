@@ -3,14 +3,14 @@ import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
 import { rest } from "msw";
 
-import CourseCreatePage from "main/pages/CoursesCreatePage"
+import CoursesCreatePage from "main/pages/CoursesCreatePage"
 
 export default {
-    title: 'pages/CourseCreatePage',
-    component: CourseCreatePage
+    title: 'pages/CoursesCreatePage',
+    component: CoursesCreatePage
 };
 
-const Template = () => <CourseCreatePage storybook={true} />;
+const Template = () => <CoursesCreatePage storybook={true} />;
 
 export const Default = Template.bind({});
 Default.parameters = {
