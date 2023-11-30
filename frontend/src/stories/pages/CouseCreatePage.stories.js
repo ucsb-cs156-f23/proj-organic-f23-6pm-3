@@ -3,7 +3,7 @@ import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
 import { rest } from "msw";
 
-import CourseCreatePage from "main/pages/CourseCreatePage"
+import CourseCreatePage from "main/pages/CoursesCreatePage"
 
 export default {
     title: 'pages/CourseCreatePage',

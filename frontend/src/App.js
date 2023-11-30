@@ -9,8 +9,8 @@ import ProfilePage from "main/pages/ProfilePage";
 import AdminUsersPage from "main/pages/AdminUsersPage";
 import AdminJobsPage from "main/pages/AdminJobsPage";
 
-import CourseIndexPage from "main/pages/CourseIndexPage";
-import CourseCreatePage from "main/pages/CourseCreatePage";
+import CoursesIndexPage from "main/pages/CoursesIndexPage";
+import CoursesCreatePage from "main/pages/CoursesCreatePage";
 
 import { hasRole, useCurrentUser } from "main/utils/currentUser";
 import NotFoundPage from "main/pages/NotFoundPage";
@@ -73,14 +73,14 @@ function App() {
         {
           hasRole(currentUser, "ROLE_USER") && (
             <>
-              <Route exact path="/course" element={<CourseIndexPage />} />
+              <Route exact path="/courses" element={<CoursesIndexPage />} />
             </>
           )
         }
         {
           hasRole(currentUser, "ROLE_ADMIN") && (
             <>
-              <Route exact path="/course/create" element={<CourseCreatePage />} />
+              <Route exact path="/courses/create" element={<CoursesCreatePage />} />
             </>
           )
         }

@@ -4,7 +4,7 @@ import { Navigate } from 'react-router-dom'
 import { useBackendMutation } from "main/utils/useBackend";
 import { toast } from "react-toastify";
 
-export default function CourseCreatePage({storybook=false}) {
+export default function CoursesCreatePage({storybook=false}) {
 
   const objectToAxiosParams = (course) => ({
     url: "/api/courses/post",
@@ -37,7 +37,7 @@ export default function CourseCreatePage({storybook=false}) {
   }
 
   if (isSuccess && !storybook) {
-    return <Navigate to="/course/" />
+    return <Navigate to="/courses/" />
   }
 
   return (

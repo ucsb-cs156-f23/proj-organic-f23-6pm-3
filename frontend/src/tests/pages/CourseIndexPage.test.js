@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import CourseIndexPage from "main/pages/CourseIndexPage";
+import CourseIndexPage from "main/pages/CoursesIndexPage";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
 
