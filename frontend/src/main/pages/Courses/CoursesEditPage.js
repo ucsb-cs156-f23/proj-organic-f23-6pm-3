@@ -33,8 +33,8 @@ export default function CoursesEditPage({storybook=false}) {
       name: course.name,
       school: course.school,
       term: course.term,
-      start: course.start,
-      end: course.end,
+      startDate: course.startDate,
+      endDate: course.endDate,
       githubOrg: course.githubOrg
     }
   });

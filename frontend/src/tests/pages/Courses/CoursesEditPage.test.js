@@ -79,8 +79,8 @@ describe("CoursesEditPage tests", () => {
                 name: "CMPSC 156",
                 school: "UCSB",
                 term: "F23",
-                start: "2023-09-27T14:00",
-                end: "2023-12-12T15:15",
+                startDate: "2023-09-27T14:00",
+                endDate: "2023-12-12T15:15",
                 githubOrg: "ucsb-cs156-f23"
             });
             axiosMock.onPut('/api/courses').reply(200, {
@@ -88,8 +88,8 @@ describe("CoursesEditPage tests", () => {
                 name: "CMPSC 111",
                 school: "UCLA",
                 term: "W24",
-                start: "2024-01-01T09:00",
-                end: "2024-03-15T10:15",
+                startDate: "2024-01-01T09:00",
+                endDate: "2024-03-15T10:15",
                 githubOrg: "ucla-cs111-w24"
             });
         });
@@ -121,8 +121,8 @@ describe("CoursesEditPage tests", () => {
             const nameField = screen.getByTestId("CourseForm-name");
             const schoolField = screen.getByTestId("CourseForm-school");
             const termField = screen.getByTestId("CourseForm-term");
-            const startField = screen.getByTestId("CourseForm-start");
-            const endField = screen.getByTestId("CourseForm-end");
+            const startField = screen.getByTestId("CourseForm-startDate");
+            const endField = screen.getByTestId("CourseForm-endDate");
             const githubOrgField = screen.getByTestId("CourseForm-githubOrg");
             const submitButton = screen.getByTestId("CourseForm-submit");
 
@@ -152,8 +152,8 @@ describe("CoursesEditPage tests", () => {
             const nameField = screen.getByTestId("CourseForm-name");
             const schoolField = screen.getByTestId("CourseForm-school");
             const termField = screen.getByTestId("CourseForm-term");
-            const startField = screen.getByTestId("CourseForm-start");
-            const endField = screen.getByTestId("CourseForm-end");
+            const startField = screen.getByTestId("CourseForm-startDate");
+            const endField = screen.getByTestId("CourseForm-endDate");
             const githubOrgField = screen.getByTestId("CourseForm-githubOrg");
             const submitButton = screen.getByTestId("CourseForm-submit");
 
@@ -190,8 +190,8 @@ describe("CoursesEditPage tests", () => {
                 name: "CMPSC 111",
                 school: "UCLA",
                 term: "W24",
-                start: "2024-01-01T09:00",
-                end: "2024-03-15T10:15",
+                startDate: "2024-01-01T09:00",
+                endDate: "2024-03-15T10:15",
                 githubOrg: "ucla-cs111-w24"
             })); // posted object
 

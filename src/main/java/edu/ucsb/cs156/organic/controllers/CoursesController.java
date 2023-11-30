@@ -165,8 +165,8 @@ public class CoursesController extends ApiController {
         course.setName(incoming.getName());
         course.setSchool(incoming.getSchool());
         course.setTerm(incoming.getTerm());
-        course.setStart(incoming.getStart());
-        course.setEnd(incoming.getEnd());
+        course.setStartDate(incoming.getStartDate());
+        course.setEndDate(incoming.getEndDate());
         course.setGithubOrg(incoming.getGithubOrg());
 
         courseRepository.save(course);
