@@ -173,6 +173,26 @@ public class CoursesController extends ApiController {
         return course;
     }
 
+    @Transactional
+    @Operation(summary = "Delete a course")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_INSTRUCTOR')")
+    @DeleteMapping("/delete")
+    public Object deleteCourse(
+            @Parameter(name = "courseId") @RequestParam Long courseId) throws JsonProcessingException {
+
+        User u = getCurrentUser().getUser();
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new EntityNotFoundException(Course.class, courseId.toString()));
+        if(!u.isAdmin())
+            courseStaffRepository.findByCourseIdAndGithubId(courseId, u.getGithubId())
+            .orElseThrow(() -> new AccessDeniedException(
+                String.format("%s is not allowed to delete course %d", u.getGithubLogin(), courseId)));
+
+        courseRepository.delete(course);
+        courseStaffRepository.deleteByCourseId(courseId);
+        return genericMessage("Course with id %s deleted".formatted(courseId));
+    }
+
     // DELETE endpoint for staff
     @Operation(summary = "Delete staff from a course")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_INSTRUCTOR')")

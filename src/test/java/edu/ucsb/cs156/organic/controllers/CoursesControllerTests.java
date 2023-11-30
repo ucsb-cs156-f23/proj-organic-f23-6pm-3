@@ -678,5 +678,158 @@ public class CoursesControllerTests extends ControllerTestCase {
                 assertEquals("cgaucho is not allowed to update course 1", json.get("message"));
         }
 
+       //DELETE TEST
+        @WithMockUser(roles = { "INSTRUCTOR" })
+        @Test
+        public void staff_can_edit_an_existing_course() throws Exception {
+                // arrange
+                User currentUser = currentUserService.getCurrentUser().getUser();
+
+                Staff courseStaff1 = Staff.builder()
+                                .id(111L)
+                                .courseId(course1.getId())
+                                .githubId(currentUser.getGithubId())
+                                .user(currentUser)
+                                .build();
+
+                Course courseAfter = Course.builder()
+                                .id(1L)
+                                .name("CS36")
+                                .school("TUCSB")
+                                .term("M25")
+                                .start(LocalDateTime.parse("2024-09-01T00:00:00"))
+                                .end(LocalDateTime.parse("2025-12-31T00:00:00"))
+                                .githubOrg("ucsb-cs36-m25")
+                                .build();
+
+                String requestBody = mapper.writeValueAsString(courseAfter);
+
+                when(courseRepository.findById(eq(course1.getId()))).thenReturn(Optional.of(course1));
+                when(courseStaffRepository.findByCourseIdAndGithubId(eq(course1.getId()),
+                                eq(courseStaff1.getGithubId()))).thenReturn(Optional.of(courseStaff1));
+
+                // act
+                MvcResult response = mockMvc.perform(
+                                put("/api/courses/update?courseId=1")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .characterEncoding("utf-8")
+                                                .content(requestBody)
+                                                .with(csrf()))
+                                .andExpect(status().isOk()).andReturn();
+
+                // assert
+                verify(courseRepository, times(1)).findById(1L);
+                verify(courseRepository, times(1)).save(courseAfter); // should be saved with correct user
+                verify(courseStaffRepository, times(1)).findByCourseIdAndGithubId(eq(course1.getId()),
+                                eq(courseStaff1.getGithubId()));
+                String responseString = response.getResponse().getContentAsString();
+                assertEquals(requestBody, responseString);
+        }
+
+        @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
+        public void admin_can_delete_an_existing_course() throws Exception {
+                // arrange
+
+                when(courseRepository.findById(eq(course1.getId()))).thenReturn(Optional.of(course1));
+
+                // act
+                MvcResult response = mockMvc.perform(
+                                delete("/api/courses/delete?courseId=1")
+                                                .with(csrf()))
+                                .andExpect(status().isOk()).andReturn();
+
+                // assert
+                verify(courseRepository, times(1)).findById(1L);
+                verify(courseRepository, times(1)).delete(any()); // should see some delete
+                verify(courseStaffRepository, times(1)).deleteByCourseId(any());
+                Map<String, Object> json = responseToJson(response);
+                assertEquals("Course with id 1 deleted", json.get("message"));
+        }
+
+        @WithMockUser(roles = { "INSTRUCTOR" })
+        @Test
+        public void nonstaff_cannot_delete_an_existing_course() throws Exception {
+                // arrange
+
+                User user1 = User.builder().githubId(24689).githubLogin("randomGithubUsername").build();
+
+                Staff courseStaff1 = Staff.builder()
+                                .id(111L)
+                                .courseId(1L)
+                                .githubId(user1.getGithubId())
+                                .user(user1)
+                                .build();
+
+                ArrayList<Staff> expectedCourseStaff = new ArrayList<>();
+                expectedCourseStaff.addAll(Arrays.asList(courseStaff1));
+
+                when(courseRepository.findById(eq(course1.getId()))).thenReturn(Optional.of(course1));
+                when(courseStaffRepository.findByCourseIdAndGithubId(eq(course1.getId()),
+                                eq(courseStaff1.getGithubId()))).thenReturn(Optional.of(courseStaff1));
+
+                // act
+                MvcResult response = mockMvc.perform(
+                                delete("/api/courses/delete?courseId=1")
+                                                .with(csrf()))
+                                .andExpect(status().isForbidden()).andReturn();
+
+                // assert
+                verify(courseRepository, times(1)).findById(1L);
+                Map<String, Object> json = responseToJson(response);
+                assertEquals("cgaucho is not allowed to delete course 1", json.get("message"));
+        }
+
+        @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
+        public void admin_cannot_delete_course_that_does_not_exist() throws Exception {
+                // arrange
+                when(courseRepository.findById(eq(1L))).thenReturn(Optional.empty());
+
+                // act
+                MvcResult response = mockMvc.perform(
+                                 delete("/api/courses/delete?courseId=1")
+                                                 .with(csrf()))
+                                 .andExpect(status().isNotFound()).andReturn();
+
+                // assert
+                verify(courseRepository, times(1)).findById(1L);
+                Map<String, Object> json = responseToJson(response);
+                assertEquals("Course with id 1 not found", json.get("message"));
+         }
+
+        @WithMockUser(roles = { "INSTRUCTOR" })
+        @Test
+        public void staff_can_delete_an_existing_course() throws Exception {
+                // arrange
+
+                User currentUser = currentUserService.getCurrentUser().getUser();
+
+                Staff courseStaff1 = Staff.builder()
+                                .id(111L)
+                                .courseId(course1.getId())
+                                .githubId(currentUser.getGithubId())
+                                .user(currentUser)
+                                .build();
+
+                when(courseRepository.findById(eq(course1.getId()))).thenReturn(Optional.of(course1));
+                when(courseStaffRepository.findByCourseIdAndGithubId(eq(course1.getId()),
+                                eq(courseStaff1.getGithubId()))).thenReturn(Optional.of(courseStaff1));
+
+                // act
+                MvcResult response = mockMvc.perform(
+                                delete("/api/courses/delete?courseId=1")
+                                                .with(csrf()))
+                                .andExpect(status().isOk()).andReturn();
+
+                // assert
+                verify(courseRepository, times(1)).findById(1L);
+                verify(courseRepository, times(1)).delete(any()); // should see some delete
+                verify(courseStaffRepository, times(1)).deleteByCourseId(any());
+                verify(courseStaffRepository, times(1)).findByCourseIdAndGithubId(eq(course1.getId()),
+                                eq(courseStaff1.getGithubId()));
+                Map<String, Object> json = responseToJson(response);
+                assertEquals("Course with id 1 deleted", json.get("message"));
+        }
 
 }
