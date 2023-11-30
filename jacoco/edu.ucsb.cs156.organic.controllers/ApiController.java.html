@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.security.access.AccessDeniedException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
@@ -17,32 +18,32 @@ import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.util.Map;
 
-<span class="fc" id="L20">@Slf4j</span>
+<span class="fc" id="L21">@Slf4j</span>
 public abstract class ApiController {
   @Autowired
   private CurrentUserService currentUserService;
 
   protected CurrentUser getCurrentUser() {
-<span class="fc" id="L26">    return currentUserService.getCurrentUser();</span>
+<span class="fc" id="L27">    return currentUserService.getCurrentUser();</span>
   }
   
   @ExceptionHandler({ IllegalArgumentException.class})
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public Object handleIllegalArgumentException(Throwable e) {
-<span class="fc" id="L32">    Map&lt;String,String&gt; map =  Map.of(</span>
-<span class="fc" id="L33">      &quot;type&quot;, e.getClass().getSimpleName(),</span>
-<span class="fc" id="L34">      &quot;message&quot;, e.getMessage()</span>
+<span class="fc" id="L33">    Map&lt;String,String&gt; map =  Map.of(</span>
+<span class="fc" id="L34">      &quot;type&quot;, e.getClass().getSimpleName(),</span>
+<span class="fc" id="L35">      &quot;message&quot;, e.getMessage()</span>
     );
-<span class="fc" id="L36">    log.error(&quot;Exception thrown: {}&quot;, map);</span>
-<span class="fc" id="L37">    return map;</span>
+<span class="fc" id="L37">    log.error(&quot;Exception thrown: {}&quot;, map);</span>
+<span class="fc" id="L38">    return map;</span>
   }
 
   @ExceptionHandler({ EntityNotFoundException.class })
   @ResponseStatus(HttpStatus.NOT_FOUND)
   public Object handleGenericException(Throwable e) {
-<span class="fc" id="L43">    return Map.of(</span>
-<span class="fc" id="L44">      &quot;type&quot;, e.getClass().getSimpleName(),</span>
-<span class="fc" id="L45">      &quot;message&quot;, e.getMessage()</span>
+<span class="fc" id="L44">    return Map.of(</span>
+<span class="fc" id="L45">      &quot;type&quot;, e.getClass().getSimpleName(),</span>
+<span class="fc" id="L46">      &quot;message&quot;, e.getMessage()</span>
     );
   }
 
@@ -53,29 +54,40 @@ public abstract class ApiController {
    * @return ObjectMapper mapper
    */
   public ObjectMapper getMapper() {
-<span class="fc" id="L56">    return mapper;</span>
+<span class="fc" id="L57">    return mapper;</span>
   }
 
 
   protected Object genericMessage(String message) {
-<span class="fc" id="L61">    return Map.of(&quot;message&quot;, message);</span>
+<span class="fc" id="L62">    return Map.of(&quot;message&quot;, message);</span>
   }
 
 
-<span class="fc" id="L65">  public ApiController() {</span>
-<span class="fc" id="L66">   mapper = mapperThatIgnoresMockitoMocks();</span>
-<span class="fc" id="L67">  }</span>
+<span class="fc" id="L66">  public ApiController() {</span>
+<span class="fc" id="L67">   mapper = mapperThatIgnoresMockitoMocks();</span>
+<span class="fc" id="L68">  }</span>
 
   public static ObjectMapper mapperThatIgnoresMockitoMocks() {
-<span class="fc" id="L70">    ObjectMapper mapper = new ObjectMapper();</span>
-<span class="fc" id="L71">    mapper.registerModule(new JavaTimeModule());</span>
-<span class="fc" id="L72">    mapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector() {</span>
+<span class="fc" id="L71">    ObjectMapper mapper = new ObjectMapper();</span>
+<span class="fc" id="L72">    mapper.registerModule(new JavaTimeModule());</span>
+<span class="fc" id="L73">    mapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector() {</span>
       @Override
       public boolean hasIgnoreMarker(final AnnotatedMember m) {
-<span class="fc bfc" id="L75" title="All 4 branches covered.">        return super.hasIgnoreMarker(m) || m.getName().contains(&quot;Mockito&quot;);</span>
+<span class="fc bfc" id="L76" title="All 4 branches covered.">        return super.hasIgnoreMarker(m) || m.getName().contains(&quot;Mockito&quot;);</span>
       }
     });
-<span class="fc" id="L78">    return mapper;</span>
+<span class="fc" id="L79">    return mapper;</span>
   }
+
+
+  @ExceptionHandler({ AccessDeniedException.class })
+  @ResponseStatus(HttpStatus.FORBIDDEN)
+  public Object handleAccessDeniedException(Throwable err) {
+<span class="fc" id="L86">    return Map.of(</span>
+<span class="fc" id="L87">      &quot;type&quot;, err.getClass().getSimpleName(),</span>
+<span class="fc" id="L88">      &quot;message&quot;, err.getMessage()</span>
+    );
+  }
+
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

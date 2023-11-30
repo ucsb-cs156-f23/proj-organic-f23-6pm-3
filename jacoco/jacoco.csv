@@ -10,12 +10,12 @@ organic,edu.ucsb.cs156.organic.services,GrantedAuthoritiesService,0,21,0,0,0,7,0
 organic,edu.ucsb.cs156.organic.services,SystemInfoService,0,3,0,0,0,1,0,1,0,1
 organic,edu.ucsb.cs156.organic.services,SystemInfoServiceImpl,0,30,0,0,0,10,0,3,0,3
 organic,edu.ucsb.cs156.organic.controllers,StudentsController.Status,0,15,0,0,0,2,0,1,0,1
-organic,edu.ucsb.cs156.organic.controllers,ApiController,0,63,0,0,0,19,0,8,0,8
+organic,edu.ucsb.cs156.organic.controllers,ApiController,0,72,0,0,0,22,0,9,0,9
 organic,edu.ucsb.cs156.organic.controllers,UsersController,0,106,0,4,0,12,0,8,0,6
 organic,edu.ucsb.cs156.organic.controllers,ApiController.new JacksonAnnotationIntrospector() {...},0,16,0,4,0,2,0,4,0,2
 organic,edu.ucsb.cs156.organic.controllers,CSRFController,0,5,0,0,0,2,0,2,0,2
 organic,edu.ucsb.cs156.organic.controllers,JobsController,0,52,0,4,0,12,0,6,0,4
-organic,edu.ucsb.cs156.organic.controllers,CoursesController,0,281,0,6,0,59,0,18,0,15
+organic,edu.ucsb.cs156.organic.controllers,CoursesController,0,360,0,6,0,73,0,21,0,18
 organic,edu.ucsb.cs156.organic.controllers,UserInfoController,0,54,0,0,0,14,0,6,0,6
 organic,edu.ucsb.cs156.organic.controllers,SystemInfoController,0,7,0,0,0,2,0,2,0,2
 organic,edu.ucsb.cs156.organic.controllers,StudentsController,0,201,0,4,0,41,0,10,0,8
