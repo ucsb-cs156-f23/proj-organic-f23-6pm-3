@@ -82,7 +82,7 @@ public class CoursesController extends ApiController {
                 .name(name)
                 .school(school)
                 .term(term)
-                .start(start)
+                .startDate(start)
                 .endDate(endDate)
                 .githubOrg(githubOrg)
                 .build();
