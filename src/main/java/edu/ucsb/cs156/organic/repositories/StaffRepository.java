@@ -13,4 +13,5 @@ public interface StaffRepository extends CrudRepository<Staff, Integer> {
     Iterable<Staff> findByGithubId(Integer githubId);
     Optional<Staff> findById(Long id);
     Optional<Staff> findByCourseIdAndGithubId(Long courseId, Integer githubId);
+    void deleteByCourseId(Long courseId);
 }

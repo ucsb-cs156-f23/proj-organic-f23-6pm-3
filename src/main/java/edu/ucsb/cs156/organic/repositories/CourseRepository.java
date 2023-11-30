@@ -14,4 +14,5 @@ public interface CourseRepository extends CrudRepository<Course, Integer> {
 
    @Query("select c from courses c where c.id in (select cs.courseId from staff cs where cs.githubId = :githubId)")
    public Iterable<Course> findCoursesStaffedByUser(Integer githubId);
+
 }
