@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import CourseIndexPage from "main/pages/CoursesIndexPage";
+import CoursesIndexPage from "main/pages/CoursesIndexPage";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
 
@@ -9,7 +9,7 @@ import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
 
 
-describe("CoursePlaceholderIndexPage tests", () => {
+describe("CoursesPlaceholderIndexPage tests", () => {
 
     const axiosMock = new AxiosMockAdapter(axios);
 
@@ -30,7 +30,7 @@ describe("CoursePlaceholderIndexPage tests", () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
-                    <CourseIndexPage />
+                    <CoursesIndexPage />
                 </MemoryRouter>
             </QueryClientProvider>
         );

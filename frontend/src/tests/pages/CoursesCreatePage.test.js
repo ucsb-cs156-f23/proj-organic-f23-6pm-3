@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import CourseCreatePage from "main/pages/CoursesCreatePage";
+import CoursesCreatePage from "main/pages/CoursesCreatePage";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
 
@@ -29,7 +29,7 @@ jest.mock('react-router-dom', () => {
     };
 });
 
-describe("CourseCreatePage tests", () => {
+describe("CoursesCreatePage tests", () => {
 
     const axiosMock = new AxiosMockAdapter(axios);
 
@@ -46,7 +46,7 @@ describe("CourseCreatePage tests", () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
-                    <CourseCreatePage />
+                    <CoursesCreatePage />
                 </MemoryRouter>
             </QueryClientProvider>
         );
@@ -70,7 +70,7 @@ describe("CourseCreatePage tests", () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
-                    <CourseCreatePage />
+                    <CoursesCreatePage />
                 </MemoryRouter>
             </QueryClientProvider>
         )
@@ -121,7 +121,7 @@ describe("CourseCreatePage tests", () => {
 
         // assert - check that the toast was called with the expected message
         expect(mockToast).toBeCalledWith("New Course Created - id: 1 name: CMPSC 156");
-        expect(mockNavigate).toBeCalledWith({ "to": "/course/" });
+        expect(mockNavigate).toBeCalledWith({ "to": "/courses/" });
 
     });
 });
