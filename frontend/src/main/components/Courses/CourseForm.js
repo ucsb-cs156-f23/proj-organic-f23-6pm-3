@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
 function CourseForm({ initialContents, submitAction, buttonLabel = "Create" }) {
-
+    
     // Stryker disable all
     const {
         register,
