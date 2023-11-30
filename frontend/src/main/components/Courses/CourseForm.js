@@ -96,28 +96,28 @@ function CourseForm({ initialContents, submitAction, buttonLabel = "Create" }) {
 
                 <Col>
                     <Form.Group className="mb-3" >
-                        <Form.Label htmlFor="start">Start Date (iso format)</Form.Label>
+                        <Form.Label htmlFor="startDate">Start Date (iso format)</Form.Label>
                         <Form.Control
-                            data-testid="CourseForm-start"
-                            id="start"
+                            data-testid="CourseForm-startDate"
+                            id="startDate"
                             type="datetime-local"
-                            isInvalid={Boolean(errors.start)}
-                            {...register("start", { required: true })}
+                            isInvalid={Boolean(errors.startDate)}
+                            {...register("startDate", { required: true })}
                         />
                         <Form.Control.Feedback type="invalid">
-                            {errors.start && 'StartDate is required. '}
+                            {errors.startDate && 'StartDate is required. '}
                         </Form.Control.Feedback>
                     </Form.Group>
                 </Col>  
                 <Col>
                     <Form.Group className="mb-3" >
-                        <Form.Label htmlFor="end">End Date (iso format)</Form.Label>
+                        <Form.Label htmlFor="endDate">End Date (iso format)</Form.Label>
                         <Form.Control
-                            data-testid="CourseForm-end"
-                            id="end"
+                            data-testid="CourseForm-endDate"
+                            id="endDate"
                             type="datetime-local"
-                            isInvalid={Boolean(errors.end)}
-                            {...register("end", { required: true })}
+                            isInvalid={Boolean(errors.endDate)}
+                            {...register("endDate", { required: true })}
                         />
                         <Form.Control.Feedback type="invalid">
                             {errors.endDate && 'EndDate is required. '}

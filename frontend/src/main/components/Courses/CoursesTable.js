@@ -46,7 +46,7 @@ export default function CoursesTable({ courses, currentUser }) {
         },
         {
             Header: 'Start',
-            accessor: 'start',
+            accessor: 'startDate',
         },
         {
             Header: 'End',

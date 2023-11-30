@@ -60,7 +60,7 @@ describe("CourseCreatePage tests", () => {
             "name": "CMPSC 156",
             "school": "UCSB",
             "term": "F23",
-            "start": "2023-09-27T14:00",
+            "startDate": "2023-09-27T14:00",
             "endDate": "2023-12-12T15:15",
             "githubOrg": "ucsb-cs156-f23"
         };
@@ -114,7 +114,7 @@ describe("CourseCreatePage tests", () => {
             "name": "CMPSC 156",
             "school": "UCSB",
             "term": "F23",
-            "start": "2023-09-27T14:00",
+            "startDate": "2023-09-27T14:00",
             "endDate": "2023-12-12T15:15",
             "githubOrg": "ucsb-cs156-f23"
         });
