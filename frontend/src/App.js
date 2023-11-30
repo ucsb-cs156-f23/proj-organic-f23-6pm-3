@@ -11,7 +11,7 @@ import AdminJobsPage from "main/pages/AdminJobsPage";
 
 import { hasRole, useCurrentUser } from "main/utils/currentUser";
 import NotFoundPage from "main/pages/NotFoundPage";
-import CourseIndexPage from "main/pages/Courses/CourseIndexPage";
+import CourseIndexPage from "main/pages/Courses/CoursesIndexPage";
 
 function App() {
   const { data: currentUser } = useCurrentUser();
