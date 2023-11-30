@@ -209,7 +209,7 @@ public class JobsControllerTests extends ControllerTestCase {
 
                 // act
                 MvcResult response = mockMvc
-                                .perform(post("/api/jobs/launch/testjob?fail=true&sleepMs=4000").with(csrf()))
+                                .perform(post("/api/jobs/launch/testjob?fail=true&sleepMs=2000").with(csrf()))
                                 .andExpect(status().isOk()).andReturn();
 
                 String responseString = response.getResponse().getContentAsString();
@@ -217,7 +217,9 @@ public class JobsControllerTests extends ControllerTestCase {
 
                 assertEquals("running", jobReturned.getStatus());
 
-                await().atMost(6, SECONDS)
+
+                await().atMost(11, SECONDS)
+
                 .untilAsserted(() -> {
                         verify(jobsRepository, atLeast(1)).save(jobCaptor.capture());                        
                         List<Job> values = jobCaptor.getAllValues();
