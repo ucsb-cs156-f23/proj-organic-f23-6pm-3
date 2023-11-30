@@ -14,7 +14,7 @@ export default function CourseCreatePage({storybook=false}) {
      school: course.school,
      term: course.term,
      start: course.start,
-     end: course.end,
+     endDate: course.endDate,
      githubOrg: course.githubOrg
     }
   });

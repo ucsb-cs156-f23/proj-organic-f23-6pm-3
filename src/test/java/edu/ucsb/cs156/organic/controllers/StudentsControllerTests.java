@@ -90,7 +90,7 @@ public class StudentsControllerTests extends ControllerTestCase {
                         .school("UCSB")
                         .term("F23")
                         .start(LocalDateTime.parse("2023-09-01T00:00:00"))
-                        .end(LocalDateTime.parse("2023-12-31T00:00:00"))
+                        .endDate(LocalDateTime.parse("2023-12-31T00:00:00"))
                         .githubOrg("ucsb-cs156-f23")
                         .build();
 
@@ -100,7 +100,7 @@ public class StudentsControllerTests extends ControllerTestCase {
                         .school("UCSB")
                         .term("S24")
                         .start(LocalDateTime.parse("2024-01-01T00:00:00"))
-                        .end(LocalDateTime.parse("2024-03-31T00:00:00"))
+                        .endDate(LocalDateTime.parse("2024-03-31T00:00:00"))
                         .githubOrg("ucsb-cs148-w24")
                         .build();
 

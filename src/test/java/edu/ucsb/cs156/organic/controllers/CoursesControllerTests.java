@@ -82,7 +82,7 @@ public class CoursesControllerTests extends ControllerTestCase {
                         .school("UCSB")
                         .term("F23")
                         .start(LocalDateTime.parse("2023-09-01T00:00:00"))
-                        .end(LocalDateTime.parse("2023-12-31T00:00:00"))
+                        .endDate(LocalDateTime.parse("2023-12-31T00:00:00"))
                         .githubOrg("ucsb-cs156-f23")
                         .build();
 
@@ -92,7 +92,7 @@ public class CoursesControllerTests extends ControllerTestCase {
                         .school("UCSB")
                         .term("M24")
                         .start(LocalDateTime.parse("2029-01-01T00:00:00"))
-                        .end(LocalDateTime.parse("2029-03-31T00:00:00"))
+                        .endDate(LocalDateTime.parse("2029-03-31T00:00:00"))
                         .githubOrg("ucsb-PSTAT131-w24")
                         .build();
 
@@ -152,7 +152,7 @@ public class CoursesControllerTests extends ControllerTestCase {
                                 .school("UCSB")
                                 .term("F23")
                                 .start(LocalDateTime.parse("2023-09-01T00:00:00"))
-                                .end(LocalDateTime.parse("2023-12-31T00:00:00"))
+                                .endDate(LocalDateTime.parse("2023-12-31T00:00:00"))
                                 .githubOrg("ucsb-cs9-f23")
                                 .build();
 
@@ -162,7 +162,7 @@ public class CoursesControllerTests extends ControllerTestCase {
                                 .school("UCSB")
                                 .term("F23")
                                 .start(LocalDateTime.parse("2023-09-01T00:00:00"))
-                                .end(LocalDateTime.parse("2023-12-31T00:00:00"))
+                                .endDate(LocalDateTime.parse("2023-12-31T00:00:00"))
                                 .githubOrg("ucsb-cs9-f23")
                                 .build();
 
@@ -170,7 +170,7 @@ public class CoursesControllerTests extends ControllerTestCase {
 
                 // act
                 MvcResult response = mockMvc.perform(
-                                post("/api/courses/post?name=CS9&school=UCSB&term=F23&start=2023-09-01T00:00:00&end=2023-12-31T00:00:00&githubOrg=ucsb-cs9-f23")
+                                post("/api/courses/post?name=CS9&school=UCSB&term=F23&start=2023-09-01T00:00:00&endDate=2023-12-31T00:00:00&githubOrg=ucsb-cs9-f23")
                                                 .with(csrf()))
                                 .andExpect(status().isOk()).andReturn();
 

@@ -50,7 +50,7 @@ export default function CoursesTable({ courses, currentUser }) {
         },
         {
             Header: 'End',
-            accessor: 'end',
+            accessor: 'endDate',
         },
         {
             Header: 'GithubOrg',

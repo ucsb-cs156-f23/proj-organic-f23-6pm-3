@@ -120,7 +120,7 @@ function CourseForm({ initialContents, submitAction, buttonLabel = "Create" }) {
                             {...register("end", { required: true })}
                         />
                         <Form.Control.Feedback type="invalid">
-                            {errors.end && 'EndDate is required. '}
+                            {errors.endDate && 'EndDate is required. '}
                         </Form.Control.Feedback>
                     </Form.Group>
                 </Col>  

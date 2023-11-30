@@ -61,7 +61,7 @@ describe("CourseCreatePage tests", () => {
             "school": "UCSB",
             "term": "F23",
             "start": "2023-09-27T14:00",
-            "end": "2023-12-12T15:15",
+            "endDate": "2023-12-12T15:15",
             "githubOrg": "ucsb-cs156-f23"
         };
 
@@ -115,7 +115,7 @@ describe("CourseCreatePage tests", () => {
             "school": "UCSB",
             "term": "F23",
             "start": "2023-09-27T14:00",
-            "end": "2023-12-12T15:15",
+            "endDate": "2023-12-12T15:15",
             "githubOrg": "ucsb-cs156-f23"
         });
 

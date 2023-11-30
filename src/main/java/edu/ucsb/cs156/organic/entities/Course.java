@@ -20,6 +20,6 @@ public class Course {
   private String school;
   private String term;
   private LocalDateTime start;
-  private LocalDateTime end;
+  private LocalDateTime endDate;
   private String githubOrg;
 }
