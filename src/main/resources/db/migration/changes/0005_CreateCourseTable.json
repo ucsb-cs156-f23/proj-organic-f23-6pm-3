@@ -34,7 +34,7 @@
               },
               {
                 "column": {
-                  "name": "END",
+                  "name": "END_DATE",
                   "type": "TIMESTAMP"
                 }
               },
@@ -58,7 +58,7 @@
               },
               {
                 "column": {
-                  "name": "START",
+                  "name": "START_DATE",
                   "type": "TIMESTAMP"
                 }
               },

@@ -75,8 +75,8 @@ public class CoursesController extends ApiController {
             @Parameter(name = "name", description ="course name, e.g. CMPSC 156" ) @RequestParam String name,
             @Parameter(name = "school", description ="school abbreviation e.g. UCSB" ) @RequestParam String school,
             @Parameter(name = "term", description = "quarter or semester, e.g. F23") @RequestParam String term,
-            @Parameter(name = "start", description = "in iso format, i.e. YYYY-mm-ddTHH:MM:SS; e.g. 2023-10-01T00:00:00 see https://en.wikipedia.org/wiki/ISO_8601") @RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
-            @Parameter(name = "end", description = "in iso format, i.e. YYYY-mm-ddTHH:MM:SS; e.g. 2023-12-31T11:59:59 see https://en.wikipedia.org/wiki/ISO_8601") @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end,
+            @Parameter(name = "startDate", description = "in iso format, i.e. YYYY-mm-ddTHH:MM:SS; e.g. 2023-10-01T00:00:00 see https://en.wikipedia.org/wiki/ISO_8601") @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+            @Parameter(name = "endDate", description = "in iso format, i.e. YYYY-mm-ddTHH:MM:SS; e.g. 2023-12-31T11:59:59 see https://en.wikipedia.org/wiki/ISO_8601") @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
             @Parameter(name = "githubOrg", description = "for example ucsb-cs156-f23" ) @RequestParam String githubOrg)
             throws JsonProcessingException {
 
@@ -84,8 +84,8 @@ public class CoursesController extends ApiController {
                 .name(name)
                 .school(school)
                 .term(term)
-                .start(start)
-                .end(end)
+                .startDate(startDate)
+                .endDate(endDate)
                 .githubOrg(githubOrg)
                 .build();
 
@@ -165,8 +165,8 @@ public class CoursesController extends ApiController {
         course.setName(incoming.getName());
         course.setSchool(incoming.getSchool());
         course.setTerm(incoming.getTerm());
-        course.setStart(incoming.getStart());
-        course.setEnd(incoming.getEnd());
+        course.setStartDate(incoming.getStartDate());
+        course.setEndDate(incoming.getEndDate());
         course.setGithubOrg(incoming.getGithubOrg());
 
         courseRepository.save(course);
@@ -234,7 +234,5 @@ public class CoursesController extends ApiController {
         }
         return course;
     }
-
-
 
 }

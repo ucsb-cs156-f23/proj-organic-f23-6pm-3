@@ -36,8 +36,8 @@ describe("CourseForm tests", () => {
         expect(await screen.findByTestId("CourseForm-name")).toBeInTheDocument();
         expect(await screen.findByTestId("CourseForm-school")).toBeInTheDocument();
         expect(await screen.findByTestId("CourseForm-term")).toBeInTheDocument();
-        expect(await screen.findByTestId("CourseForm-start")).toBeInTheDocument();
-        expect(await screen.findByTestId("CourseForm-end")).toBeInTheDocument();
+        expect(await screen.findByTestId("CourseForm-startDate")).toBeInTheDocument();
+        expect(await screen.findByTestId("CourseForm-endDate")).toBeInTheDocument();
         expect(await screen.findByTestId("CourseForm-githubOrg")).toBeInTheDocument();
         expect(screen.getByText(/Create/)).toBeInTheDocument();
     });
@@ -78,8 +78,8 @@ describe("CourseForm tests", () => {
         const nameField = screen.getByTestId("CourseForm-name");
         const schoolField = screen.getByTestId("CourseForm-school");
         const termField = screen.getByTestId("CourseForm-term");
-        const startDateField = screen.getByTestId("CourseForm-start");
-        const endDateField = screen.getByTestId("CourseForm-end");
+        const startDateField = screen.getByTestId("CourseForm-startDate");
+        const endDateField = screen.getByTestId("CourseForm-endDate");
         const githubOrganizationField = screen.getByTestId("CourseForm-githubOrg");
         const submitButton = screen.getByTestId("CourseForm-submit");
 

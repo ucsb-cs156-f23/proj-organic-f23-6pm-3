@@ -30,7 +30,7 @@ describe("UserTable tests", () => {
     );
 
     const expectedHeaders = ["id", "Name", "School", "Term", "Start", "End", "GithubOrg"];
-    const expectedFields = ["id", "name", "school", "term", "start", "end", "githubOrg"];
+    const expectedFields = ["id", "name", "school", "term", "startDate", "endDate", "githubOrg"];
     const testId = "CoursesTable";
 
     expectedHeaders.forEach((headerText) => {
@@ -63,7 +63,7 @@ describe("UserTable tests", () => {
     const currentUser = currentUserFixtures.adminUser;
 
     const expectedHeaders = ["id", "Name", "School", "Term", "Start", "End", "GithubOrg"];
-    const expectedFields = ["id", "name", "school", "term", "start", "end", "githubOrg"];
+    const expectedFields = ["id", "name", "school", "term", "startDate", "endDate", "githubOrg"];
     const testId = "CoursesTable";
 
     // act
@@ -102,7 +102,7 @@ describe("UserTable tests", () => {
     );
 
     const expectedHeaders = ["id", "Name", "School", "Term", "Start", "End", "GithubOrg"];
-    const expectedFields = ["id", "name", "school", "term", "start", "end", "githubOrg"];
+    const expectedFields = ["id", "name", "school", "term", "startDate", "endDate", "githubOrg"];
     const testId = "CoursesTable";
 
     expectedHeaders.forEach((headerText) => {

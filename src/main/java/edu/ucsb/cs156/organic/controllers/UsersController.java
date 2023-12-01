@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
-
 import edu.ucsb.cs156.organic.entities.User;
 import edu.ucsb.cs156.organic.repositories.UserRepository;
 import edu.ucsb.cs156.organic.errors.EntityNotFoundException;

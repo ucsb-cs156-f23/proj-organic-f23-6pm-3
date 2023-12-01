@@ -4,7 +4,6 @@ import edu.ucsb.cs156.organic.entities.Course;
 import edu.ucsb.cs156.organic.entities.User;
 import edu.ucsb.cs156.organic.entities.UserEmail;
 import edu.ucsb.cs156.organic.models.CurrentUser;
-import edu.ucsb.cs156.organic.repositories.CourseRepository;
 import edu.ucsb.cs156.organic.repositories.UserRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -21,10 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
-import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 @Slf4j
 @Tag(name = "Current User Information")

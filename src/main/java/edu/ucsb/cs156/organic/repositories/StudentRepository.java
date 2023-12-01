@@ -1,6 +1,5 @@
 package edu.ucsb.cs156.organic.repositories;
 
-import edu.ucsb.cs156.organic.entities.Staff;
 import edu.ucsb.cs156.organic.entities.Student;
 
 import java.util.Optional;
