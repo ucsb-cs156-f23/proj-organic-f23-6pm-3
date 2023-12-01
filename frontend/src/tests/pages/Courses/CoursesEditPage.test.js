@@ -121,8 +121,8 @@ describe("CoursesEditPage tests", () => {
             const nameField = screen.getByTestId("CourseForm-name");
             const schoolField = screen.getByTestId("CourseForm-school");
             const termField = screen.getByTestId("CourseForm-term");
-            const startField = screen.getByTestId("CourseForm-start");
-            const endField = screen.getByTestId("CourseForm-end");
+            const startField = screen.getByTestId("CourseForm-startDate");
+            const endField = screen.getByTestId("CourseForm-endDate");
             const githubOrgField = screen.getByTestId("CourseForm-githubOrg");
             const submitButton = screen.getByTestId("CourseForm-submit");
 
