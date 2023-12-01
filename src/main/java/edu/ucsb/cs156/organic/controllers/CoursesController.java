@@ -235,6 +235,4 @@ public class CoursesController extends ApiController {
         return course;
     }
 
-
-
 }

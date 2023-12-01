@@ -115,25 +115,25 @@ describe("CoursesEditPage tests", () => {
                 </QueryClientProvider>
             );
 
-            // await screen.findByTestId("CourseForm-name");
+            await screen.findByTestId("CourseForm-name");
 
-            // const idField = screen.getByTestId("CourseForm-id");
-            // const nameField = screen.getByTestId("CourseForm-name");
-            // const schoolField = screen.getByTestId("CourseForm-school");
-            // const termField = screen.getByTestId("CourseForm-term");
-            // const startField = screen.getByTestId("CourseForm-startDate");
-            // const endField = screen.getByTestId("CourseForm-endDate");
-            // const githubOrgField = screen.getByTestId("CourseForm-githubOrg");
-            // const submitButton = screen.getByTestId("CourseForm-submit");
+            const idField = screen.getByTestId("CourseForm-id");
+            const nameField = screen.getByTestId("CourseForm-name");
+            const schoolField = screen.getByTestId("CourseForm-school");
+            const termField = screen.getByTestId("CourseForm-term");
+            const startField = screen.getByTestId("CourseForm-start");
+            const endField = screen.getByTestId("CourseForm-end");
+            const githubOrgField = screen.getByTestId("CourseForm-githubOrg");
+            const submitButton = screen.getByTestId("CourseForm-submit");
 
-            // expect(idField).toHaveValue("17");
-            // expect(nameField).toHaveValue("CMPSC 156");
-            // expect(schoolField).toHaveValue("UCSB");
-            // expect(termField).toHaveValue("F23");
-            // expect(startField).toHaveValue("2023-09-27T14:00");
-            // expect(endField).toHaveValue("2023-12-12T15:15");
-            // expect(githubOrgField).toHaveValue("ucsb-cs156-f23");
-            // expect(submitButton).toBeInTheDocument();
+            expect(idField).toHaveValue("17");
+            expect(nameField).toHaveValue("CMPSC 156");
+            expect(schoolField).toHaveValue("UCSB");
+            expect(termField).toHaveValue("F23");
+            expect(startField).toHaveValue("2023-09-27T14:00");
+            expect(endField).toHaveValue("2023-12-12T15:15");
+            expect(githubOrgField).toHaveValue("ucsb-cs156-f23");
+            expect(submitButton).toBeInTheDocument();
         });
 
         test("Changes when you click Update", async () => {
