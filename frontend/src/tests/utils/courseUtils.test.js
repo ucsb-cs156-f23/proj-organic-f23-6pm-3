@@ -43,9 +43,9 @@ describe("courseUtils", () => {
 
             // assert
             expect(result).toEqual({
-                url: "/api/courses",
+                url: "/api/courses/delete",
                 method: "DELETE",
-                params: { id: 17 }
+                params: { courseId: 17 }
             });
         });
 

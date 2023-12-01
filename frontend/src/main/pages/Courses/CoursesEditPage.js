@@ -27,7 +27,7 @@ export default function CoursesEditPage({storybook=false}) {
     url: "/api/courses/update",
     method: "PUT",
     params: {
-      id: course.id,
+      courseId: course.id,
     },
     data: {
       name: course.name,
