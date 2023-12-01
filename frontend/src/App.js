@@ -9,8 +9,8 @@ import ProfilePage from "main/pages/ProfilePage";
 import AdminUsersPage from "main/pages/AdminUsersPage";
 import AdminJobsPage from "main/pages/AdminJobsPage";
 
-import CoursesIndexPage from "main/pages/CoursesIndexPage";
-import CoursesCreatePage from "main/pages/CoursesCreatePage";
+import CoursesIndexPage from "main/pages/Courses/CoursesIndexPage";
+import CoursesCreatePage from "main/pages/Courses/CoursesCreatePage";
 import CoursesEditPage from "main/pages/Courses/CoursesEditPage";
 
 import { hasRole, useCurrentUser } from "main/utils/currentUser";
@@ -34,9 +34,9 @@ function App() {
 
   const courseRoutes = (hasRole(currentUser, "ROLE_ADMIN") || hasRole(currentUser, "ROLE_INSTRUCTOR")) ? (
     <>
-      <Route path="/courses" element={/*Page for Index Needed*/<NotFoundPage />} />
-      <Route path="/courses/edit/:id" element={/*Page for Edit Needed*/<NotFoundPage />} />
-      <Route path="/courses/create" element={/*Page for Create Needed*/<NotFoundPage />} />
+      <Route path="/courses" element={<CoursesIndexPage />} />
+      <Route path="/courses/edit/:id" element={<CoursesEditPage />} />
+      <Route path="/courses/create" element={<CoursesCreatePage />} />
     </>
   ) : null;
 
