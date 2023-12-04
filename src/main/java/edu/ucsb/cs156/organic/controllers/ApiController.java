@@ -79,9 +79,6 @@ public abstract class ApiController {
     return mapper;
   }
 
-  protected Object genericMessage(String message) {
-    return Map.of("message", message);
-  }
 
   @ExceptionHandler({ AccessDeniedException.class })
   @ResponseStatus(HttpStatus.FORBIDDEN)
