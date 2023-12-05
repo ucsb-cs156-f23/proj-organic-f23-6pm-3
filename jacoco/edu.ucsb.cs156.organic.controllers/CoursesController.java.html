@@ -75,8 +75,8 @@ import java.util.Optional;
             @Parameter(name = &quot;name&quot;, description =&quot;course name, e.g. CMPSC 156&quot; ) @RequestParam String name,
             @Parameter(name = &quot;school&quot;, description =&quot;school abbreviation e.g. UCSB&quot; ) @RequestParam String school,
             @Parameter(name = &quot;term&quot;, description = &quot;quarter or semester, e.g. F23&quot;) @RequestParam String term,
-            @Parameter(name = &quot;start&quot;, description = &quot;in iso format, i.e. YYYY-mm-ddTHH:MM:SS; e.g. 2023-10-01T00:00:00 see https://en.wikipedia.org/wiki/ISO_8601&quot;) @RequestParam(&quot;start&quot;) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
-            @Parameter(name = &quot;end&quot;, description = &quot;in iso format, i.e. YYYY-mm-ddTHH:MM:SS; e.g. 2023-12-31T11:59:59 see https://en.wikipedia.org/wiki/ISO_8601&quot;) @RequestParam(&quot;end&quot;) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end,
+            @Parameter(name = &quot;startDate&quot;, description = &quot;in iso format, i.e. YYYY-mm-ddTHH:MM:SS; e.g. 2023-10-01T00:00:00 see https://en.wikipedia.org/wiki/ISO_8601&quot;) @RequestParam(&quot;startDate&quot;) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+            @Parameter(name = &quot;endDate&quot;, description = &quot;in iso format, i.e. YYYY-mm-ddTHH:MM:SS; e.g. 2023-12-31T11:59:59 see https://en.wikipedia.org/wiki/ISO_8601&quot;) @RequestParam(&quot;endDate&quot;) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
             @Parameter(name = &quot;githubOrg&quot;, description = &quot;for example ucsb-cs156-f23&quot; ) @RequestParam String githubOrg)
             throws JsonProcessingException {
 
@@ -84,8 +84,8 @@ import java.util.Optional;
 <span class="fc" id="L84">                .name(name)</span>
 <span class="fc" id="L85">                .school(school)</span>
 <span class="fc" id="L86">                .term(term)</span>
-<span class="fc" id="L87">                .start(start)</span>
-<span class="fc" id="L88">                .end(end)</span>
+<span class="fc" id="L87">                .startDate(startDate)</span>
+<span class="fc" id="L88">                .endDate(endDate)</span>
 <span class="fc" id="L89">                .githubOrg(githubOrg)</span>
 <span class="fc" id="L90">                .build();</span>
 
@@ -165,8 +165,8 @@ import java.util.Optional;
 <span class="fc" id="L165">        course.setName(incoming.getName());</span>
 <span class="fc" id="L166">        course.setSchool(incoming.getSchool());</span>
 <span class="fc" id="L167">        course.setTerm(incoming.getTerm());</span>
-<span class="fc" id="L168">        course.setStart(incoming.getStart());</span>
-<span class="fc" id="L169">        course.setEnd(incoming.getEnd());</span>
+<span class="fc" id="L168">        course.setStartDate(incoming.getStartDate());</span>
+<span class="fc" id="L169">        course.setEndDate(incoming.getEndDate());</span>
 <span class="fc" id="L170">        course.setGithubOrg(incoming.getGithubOrg());</span>
 
 <span class="fc" id="L172">        courseRepository.save(course);</span>
@@ -234,8 +234,6 @@ import java.util.Optional;
         }
 <span class="fc" id="L235">        return course;</span>
     }
-
-
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
