@@ -38,6 +38,7 @@ function App() {
       <Route path="/courses" element={<CoursesIndexPage />} />
       <Route path="/courses/edit/:id" element={<CoursesEditPage />} />
       <Route path="/courses/create" element={<CoursesCreatePage />} />
+      <Route path="/courses/{courseId}/staff" element={<CoursesCreatePage />} />
     </>
   ) : null;
 
