@@ -23,4 +23,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-f23/proj-organic-f23-6pm-3
 owner: ucsb-cs156-f23
 repo_name: proj-organic-f23-6pm-3
-pull_requests: [{"author":{"id":"MDQ6VXNlcjcwMzQxMDg0","is_bot":false,"login":"Garrett-Hu","name":""},"headRefName":"interceptorBug2","number":56,"title":"renamed files + changed githubid to id","url":"https://github.com/ucsb-cs156-f23/proj-organic-f23-6pm-3/pull/56"}]
+pull_requests: [{"author":{"id":"MDQ6VXNlcjcwMzQxMDg0","is_bot":false,"login":"Garrett-Hu","name":""},"headRefName":"interceptorBug2","number":56,"title":"BUG FIX: Interceptors (PRIORITY)","url":"https://github.com/ucsb-cs156-f23/proj-organic-f23-6pm-3/pull/56"}]
