@@ -1,4 +1,4 @@
-package edu.ucsb.cs156.organic.Interceptors;
+package edu.ucsb.cs156.organic.interceptors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,7 +42,7 @@ public class RoleUserInterceptor implements HandlerInterceptor {
 
         if (authentication instanceof OAuth2AuthenticationToken ) {
             OAuth2User oAuthUser = ((OAuth2AuthenticationToken) authentication).getPrincipal();
-            Integer githubId = oAuthUser.getAttribute("githubId");
+            Integer githubId = oAuthUser.getAttribute("id");
             Optional<User> optionalUser = userRepository.findByGithubId(githubId);
             if (optionalUser.isPresent()){
                 User user = optionalUser.get();
