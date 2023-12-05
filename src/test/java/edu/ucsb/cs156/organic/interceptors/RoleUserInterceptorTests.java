@@ -1,4 +1,4 @@
-package edu.ucsb.cs156.organic.Interceptors;
+package edu.ucsb.cs156.organic.interceptors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -52,7 +52,7 @@ public class RoleUserInterceptorTests extends ControllerTestCase{
     @BeforeEach
     public void setupSecurityContext(){
         Map<String, Object> attributes = new HashMap<>();
-        attributes.put("githubId", 1225);
+        attributes.put("id", 1225);
         attributes.put("githubLogin", "mockLogin");
         attributes.put("email", "mockemail@ucsb.edu");
         attributes.put("fullName", "Mock Name");
@@ -63,7 +63,7 @@ public class RoleUserInterceptorTests extends ControllerTestCase{
         fakeAuthorities.add(new SimpleGrantedAuthority("ROLE_INSTRUCTOR"));
         fakeAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
-        OAuth2User mockUser = new DefaultOAuth2User(fakeAuthorities, attributes, "githubId");
+        OAuth2User mockUser = new DefaultOAuth2User(fakeAuthorities, attributes, "id");
         Authentication authentication = new OAuth2AuthenticationToken(mockUser, fakeAuthorities , "mockUserRegisterId");
         // Set up some mock oauth authentication in the SecurityContextHolder for test environment
         // Be aware: SecurityContext is thread bound
@@ -75,7 +75,7 @@ public class RoleUserInterceptorTests extends ControllerTestCase{
     public void user_not_present_in_db_and_no_role_update_by_interceptor() throws Exception {
         // Set up
         User mockUser = User.builder()
-            .githubId(90210)
+            .githubId(123)
             .githubLogin("mockLogin")
             .email("nemo@ucsb.edu")
             .emailVerified(true)
@@ -83,7 +83,7 @@ public class RoleUserInterceptorTests extends ControllerTestCase{
             .admin(false)
             .instructor(true)
             .build();
-        when(userRepository.findByGithubId(90210)).thenReturn(Optional.of(mockUser));
+        when(userRepository.findByGithubId(123)).thenReturn(Optional.of(mockUser));
 
         // Act
         MockHttpServletRequest request = new MockHttpServletRequest("GET", "/api/currentUser");
