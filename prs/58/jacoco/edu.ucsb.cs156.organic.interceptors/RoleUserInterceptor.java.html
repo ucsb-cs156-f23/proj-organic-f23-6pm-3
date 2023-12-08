@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RoleUserInterceptor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">organic</a> &gt; <a href="index.source.html" class="el_package">edu.ucsb.cs156.organic.interceptors</a> &gt; <span class="el_source">RoleUserInterceptor.java</span></div><h1>RoleUserInterceptor.java</h1><pre class="source lang-java linenums">package edu.ucsb.cs156.organic.interceptors;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
+
+import edu.ucsb.cs156.organic.repositories.UserRepository;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+
+import java.util.Optional;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Collection;
+import edu.ucsb.cs156.organic.entities.User;
+
+
+@Component
+<span class="fc" id="L30">public class RoleUserInterceptor implements HandlerInterceptor {</span>
+
+   @Autowired
+   UserRepository userRepository;
+
+   @Override
+   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        // Update user's security context on server each time the user makes HTTP request to the backend
+        // If user has admin status in database we will keep ROLE_ADMIN in security context
+        // Otherwise interceptor will remove ROLE_ADMIN before the incoming request is processed by backend API
+<span class="fc" id="L40">        SecurityContext securityContext = SecurityContextHolder.getContext();</span>
+<span class="fc" id="L41">        Authentication authentication = securityContext.getAuthentication();</span>
+
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        if (authentication instanceof OAuth2AuthenticationToken ) {</span>
+<span class="fc" id="L44">            OAuth2User oAuthUser = ((OAuth2AuthenticationToken) authentication).getPrincipal();</span>
+<span class="fc" id="L45">            Integer githubId = oAuthUser.getAttribute(&quot;id&quot;);</span>
+<span class="fc" id="L46">            Optional&lt;User&gt; optionalUser = userRepository.findByGithubId(githubId);</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">            if (optionalUser.isPresent()){</span>
+<span class="fc" id="L48">                User user = optionalUser.get();</span>
+
+<span class="fc" id="L50">                Set&lt;GrantedAuthority&gt; newAuthorities = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L51">                Collection&lt;? extends GrantedAuthority&gt; currentAuthorities = authentication.getAuthorities();</span>
+<span class="fc" id="L52">                currentAuthorities.stream()</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">                .filter(authority -&gt; !authority.getAuthority().equals(&quot;ROLE_ADMIN&quot;)</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">                 &amp;&amp; !authority.getAuthority().equals(&quot;ROLE_INSTRUCTOR&quot;))</span>
+<span class="fc" id="L55">                .forEach(authority -&gt; {</span>
+<span class="fc" id="L56">                    newAuthorities.add(authority);</span>
+<span class="fc" id="L57">                });</span>
+
+<span class="fc bfc" id="L59" title="All 2 branches covered.">                if (user.isAdmin()){</span>
+<span class="fc" id="L60">                    newAuthorities.add(new SimpleGrantedAuthority(&quot;ROLE_ADMIN&quot;));</span>
+                }
+
+<span class="fc bfc" id="L63" title="All 2 branches covered.">                if (user.isInstructor()){</span>
+<span class="fc" id="L64">                    newAuthorities.add(new SimpleGrantedAuthority(&quot;ROLE_INSTRUCTOR&quot;));</span>
+                }
+                
+<span class="fc" id="L67">                Authentication newAuth = new OAuth2AuthenticationToken(oAuthUser, newAuthorities,(((OAuth2AuthenticationToken)authentication).getAuthorizedClientRegistrationId()));</span>
+<span class="fc" id="L68">                SecurityContextHolder.getContext().setAuthentication(newAuth);</span>
+            }
+        }
+
+<span class="fc" id="L72">      return true;</span>
+   }
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
