@@ -23,4 +23,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-f23/proj-organic-f23-6pm-3
 owner: ucsb-cs156-f23
 repo_name: proj-organic-f23-6pm-3
-pull_requests: [{"author":{"id":"U_kgDOBnFNuQ","is_bot":false,"login":"bella-ward","name":"Bella "},"headRefName":"Bella-update","number":58,"title":"BUG FIX: CRUD Operations B2 - PUT (Admin can update)","url":"https://github.com/ucsb-cs156-f23/proj-organic-f23-6pm-3/pull/58"}]
+pull_requests: []
