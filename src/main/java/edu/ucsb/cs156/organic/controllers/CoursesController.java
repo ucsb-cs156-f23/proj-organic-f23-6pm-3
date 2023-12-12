@@ -156,11 +156,14 @@ public class CoursesController extends ApiController {
             @RequestBody @Valid Course incoming) throws JsonProcessingException {
 
         User user = getCurrentUser().getUser();
+        
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new EntityNotFoundException(Course.class, courseId.toString()));
-        courseStaffRepository.findByCourseIdAndGithubId(courseId, user.getGithubId())
-        .orElseThrow(() -> new AccessDeniedException(
-            String.format("%s is not allowed to update course %d", user.getGithubLogin(), courseId)));
+        if (!user.isAdmin()) {
+                courseStaffRepository.findByCourseIdAndGithubId(courseId, user.getGithubId())
+                .orElseThrow(() -> new AccessDeniedException(
+                        String.format("%s is not allowed to update course %d", user.getGithubLogin(), courseId)));
+        }
 
         course.setName(incoming.getName());
         course.setSchool(incoming.getSchool());

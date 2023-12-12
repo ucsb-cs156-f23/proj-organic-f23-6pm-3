@@ -590,7 +590,6 @@ public class CoursesControllerTests extends ControllerTestCase {
                                 .andExpect(status().isOk()).andReturn();
 
                 // assert
-                verify(courseStaffRepository, times(1)).findByCourseIdAndGithubId(eq(course1.getId()),eq(courseStaff1.getGithubId()));
                 verify(courseRepository, times(1)).findById(1L);
                 verify(courseRepository, times(1)).save(courseAfter); 
                 
